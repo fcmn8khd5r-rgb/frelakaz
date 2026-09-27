@@ -1,0 +1,467 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   FRÉ LAKAZ — LE SYSTÈME VISUEL
+   ═══════════════════════════════════════════════════════════════════════
+
+   L'IDÉE. Un artisan, pas une villa. Le site doit se lire debout, dehors,
+   sur un téléphone, par quelqu'un dont la clim vient de lâcher. Tout en
+   découle : une seule grotesque, des cibles larges, des chiffres alignés,
+   et les trois actions toujours sous le pouce.
+
+   LA PALETTE. « Ardoise, givre et sable ». Le froid est inévitable pour ce
+   métier ; le papier chaud est ce qui le sauve du cliché bleu-glace. La
+   braise est RÉSERVÉE au dépannage : une couleur qui sert partout ne
+   signale plus rien.
+
+   LA TYPOGRAPHIE. IBM Plex Sans pour ce qui se lit, IBM Plex Mono pour ce
+   qui se compte — kilowatts, prix, créneaux, délais. Le monospace n'est pas
+   un ornement : il aligne les chiffres en colonne dans la grille des
+   créneaux, là où une chasse variable les ferait danser d'une ligne à
+   l'autre.
+
+   LES CONTRASTES SONT CALCULÉS, pas choisis à l'œil. Valeurs mesurées sur
+   le sable #F3F0EA : encre 14,3:1 · encre-2 7,9:1 · encre-3 4,9:1 ·
+   givre 5,9:1 · braise 5,6:1. Le trait de champ tient 3,2:1, seuil des
+   bordures de saisie.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* --- Surfaces ------------------------------------------------------- */
+  --fond: #f3f0ea;
+  --surface: #ffffff;
+  --surface-2: #e8e3d9;
+  --ardoise: #14222a;
+
+  /* --- Encres --------------------------------------------------------- */
+  --encre: #14222a;
+  --encre-2: #3a4c56;
+  --encre-3: #5a6a73;
+  --encre-claire: #ffffff;
+
+  /* --- Traits --------------------------------------------------------- */
+  --trait: #dcd6ca;
+  --trait-fort: #c0b8a8;
+  /* Une bordure de saisie doit tenir 3:1 contre ce qui l'entoure : un champ
+     qu'on ne distingue pas du fond ne se voit pas comme un champ. */
+  --trait-champ: #8c8577;
+
+  /* --- Accents -------------------------------------------------------- */
+  --givre: #0a6480;
+  --givre-clair: #3d9bb8;
+  --givre-pale: #d3e5ec;
+  --braise: #a83a1c;
+  --braise-pale: #f3dfd7;
+
+  /* --- Typographie ---------------------------------------------------- */
+  --texte: 'Plex', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --chiffre: 'Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* LES TAILLES SONT PLAFONNÉES EN VW.
+     Une borne de clamp() s'exprime en rem, et une media query lit toujours
+     le rem à 16 px quelle que soit la taille de texte choisie par le
+     lecteur : un titre calé sur une borne en rem déborde donc de l'écran
+     à 200 %. Le plafond en vw, lui, suit la largeur réelle. */
+  --t-mega: min(clamp(2.5rem, 1.6rem + 4.2vw, 4.75rem), 13vw);
+  --t-titre: min(clamp(1.875rem, 1.35rem + 2.4vw, 3rem), 9vw);
+  --t-sous: min(clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem), 6.5vw);
+  --t-corps: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --t-petit: clamp(0.9375rem, 0.92rem + 0.08vw, 0.975rem);
+  --t-kicker: clamp(0.75rem, 0.73rem + 0.1vw, 0.8125rem);
+  --t-chiffre: min(clamp(1.75rem, 1.3rem + 2.1vw, 2.75rem), 8vw);
+
+  /* --- Mesures -------------------------------------------------------- */
+  --largeur: 78rem;
+  --marge: clamp(1.25rem, 0.9rem + 1.6vw, 2.5rem);
+  --mesure: min(62ch, 100%);
+  --rail: 11rem;
+  --rayon: 4px;
+  --sp-section: clamp(3.5rem, 2.4rem + 4.6vw, 6rem);
+  --h-entete: 4rem;
+  /* La barre basse mange le bas de l'écran sur téléphone : le contenu lui
+     rend sa place, l'encoche comprise. */
+  --h-barre: 4.25rem;
+
+  --duree: 0.22s;
+  --courbe: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ─── Polices, servies par le site ───────────────────────────────────────
+   Aucun hôte tiers : ni Google Fonts, ni CDN. Un tiers de moins à résoudre
+   avant le premier texte, et rien à déclarer côté vie privée. */
+@font-face {
+  font-family: 'Plex';
+  src: url('/polices/plex-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plex';
+  src: url('/polices/plex-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plex Mono';
+  src: url('/polices/plex-mono-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Plex Mono';
+  src: url('/polices/plex-mono-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Socle ──────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Une ancre atterrit sous la barre haute, jamais dessous. Le décalage
+     négatif de .section rend ensuite au titre sa respiration. */
+  scroll-padding-top: calc(var(--h-entete) + 1.5rem);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  background: var(--fond);
+}
+
+body {
+  margin: 0;
+  background: var(--fond);
+  color: var(--encre);
+  font-family: var(--texte);
+  font-size: var(--t-corps);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  /* La barre basse est fixe : sans cette réserve, elle recouvre la dernière
+     ligne du pied de page. */
+  padding-bottom: calc(var(--h-barre) + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 60rem) {
+  body {
+    padding-bottom: 0;
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+}
+
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+picture,
+svg {
+  max-width: 100%;
+}
+
+/* <picture> en « display: contents » remonte ses enfants au rang d'éléments
+   de la grille parente : une image positionnée en absolu perd alors sa
+   référence et se pose n'importe où. On le laisse donc en bloc. */
+picture {
+  display: block;
+}
+
+img {
+  height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* ─── Gabarit ────────────────────────────────────────────────────────── */
+.enveloppe {
+  width: 100%;
+  max-width: var(--largeur);
+  margin-inline: auto;
+  padding-inline: var(--marge);
+}
+
+.section {
+  padding-block: var(--sp-section);
+  border-top: 1px solid var(--trait);
+  /* CE QU'ON VEUT VOIR EN ARRIVANT, C'EST LE TITRE — pas un filet suivi
+     d'une bande vide. La marge négative vaut le rembourrage haut : elle
+     s'ajoute au scroll-padding, le filet passe sous la barre, et le titre
+     arrive à la bonne respiration à toutes les largeurs. */
+  scroll-margin-top: calc(-1 * var(--sp-section));
+}
+
+.section--premiere {
+  border-top: 0;
+  padding-block: clamp(1.75rem, 1.2rem + 2.4vw, 3.25rem) var(--sp-section);
+}
+
+/* UNE SECTION QUI CONTINUE LA PRÉCÉDENTE. Deux sections qui se suivent sans
+   rupture de sujet — l'introduction d'une page et le formulaire qui la suit —
+   cumulaient leur rembourrage : 176 px de vide mesurés sur téléphone, et le
+   formulaire semblait appartenir à une autre page. Le filet part avec. */
+.section--suite {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.section--sombre {
+  background: var(--ardoise);
+  color: var(--encre-claire);
+  border-top: 0;
+}
+
+.section--sombre .rail {
+  color: var(--givre-clair);
+}
+
+/* La bande d'intitulé : l'intitulé, le titre et le chapeau partagent une
+   LIGNE DE BASE. Les aligner par le haut ou les étirer les met en escalier,
+   ce qui se voit immédiatement. */
+.bande {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: clamp(1.5rem, 0.9rem + 2.8vw, 3.5rem);
+}
+
+.rail {
+  /* La base est plafonnée à la largeur disponible : elle s'exprime en rem
+     et double avec la taille du texte, tandis que la bande n'a que ce que
+     l'écran lui donne. */
+  flex: 0 0 min(var(--rail), 100%);
+  min-width: 0;
+  font-family: var(--chiffre);
+  font-size: var(--t-kicker);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--givre);
+  /* Seul « anywhere » entre dans le calcul de la largeur minimale :
+     « break-word » laisse la boîte déborder quand même. */
+  overflow-wrap: anywhere;
+}
+
+.accroche {
+  flex: 1 1 22rem;
+  min-width: 0;
+  font-size: var(--t-titre);
+  max-width: 18ch;
+}
+
+.chapeau {
+  flex: 0 1 20rem;
+  min-width: 0;
+  font-size: var(--t-petit);
+  line-height: 1.7;
+  color: var(--encre-3);
+}
+
+.corps {
+  flex: 1 1 30rem;
+  min-width: 0;
+}
+
+.texte {
+  max-width: var(--mesure);
+  color: var(--encre-2);
+}
+
+.texte + .texte {
+  margin-top: 1.25rem;
+}
+
+.note {
+  font-size: var(--t-petit);
+  line-height: 1.6;
+  color: var(--encre-3);
+  max-width: 68ch;
+}
+
+/* ─── Boutons ────────────────────────────────────────────────────────── */
+.bouton {
+  /* « inline-block » et non « inline » : un inline ignore les marges
+     verticales et peint son rembourrage HORS de la ligne, par-dessus le
+     texte voisin. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  /* 48 px : confortable au pouce, et au-delà du minimum de 44. */
+  min-height: 3rem;
+  padding: 0.7rem 1.35rem;
+  border: 1px solid transparent;
+  border-radius: var(--rayon);
+  font-size: var(--t-petit);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background var(--duree) var(--courbe),
+    border-color var(--duree) var(--courbe);
+}
+
+.bouton--principal {
+  background: var(--givre);
+  border-color: var(--givre);
+  color: var(--encre-claire);
+}
+
+.bouton--principal:hover {
+  background: #085269;
+  border-color: #085269;
+}
+
+/* LA BRAISE NE SERT QU'AU DÉPANNAGE. Une couleur d'urgence employée pour
+   une action ordinaire cesse de signaler l'urgence. */
+.bouton--urgence {
+  background: var(--braise);
+  border-color: var(--braise);
+  color: var(--encre-claire);
+}
+
+.bouton--urgence:hover {
+  background: #8d2f16;
+  border-color: #8d2f16;
+}
+
+.bouton--second {
+  background: var(--surface);
+  border-color: var(--trait-champ);
+  color: var(--encre);
+}
+
+.bouton--second:hover {
+  border-color: var(--encre-2);
+}
+
+/* ─── Chiffres ───────────────────────────────────────────────────────── */
+.chiffre {
+  font-family: var(--chiffre);
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ─── Accessibilité ──────────────────────────────────────────────────── */
+.visuellement-cache {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.saut {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 200;
+  padding: 0.75rem 1.1rem;
+  background: var(--ardoise);
+  color: var(--encre-claire);
+  border-radius: var(--rayon);
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform var(--duree) var(--courbe);
+}
+
+.saut:focus-visible {
+  transform: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--givre);
+  outline-offset: 2px;
+}
+
+/* ─── Apparition au défilement ───────────────────────────────────────────
+   « transform » SEULEMENT.
+
+   L'ESTOMPE A ÉTÉ ÉCARTÉE D'EMBLÉE, et c'est une correction héritée : un
+   bloc qui monte en gagnant son opacité passe par des valeurs
+   intermédiaires, et à 0,4 d'opacité un texte mesuré à 9:1 de contraste
+   tombe sous 2,5:1. L'audit de contraste ne le voit pas — il photographie
+   un état stable — mais un lecteur qui défile lentement le lit. Le
+   mouvement seul ne traverse aucun état illisible.
+
+   L'attribut est posé par le script, et sur les seuls blocs situés sous la
+   ligne de flottaison : sans JavaScript rien n'est marqué, et la page est
+   entière. */
+.js [data-monte] {
+  transform: translateY(0.75rem);
+  transition: transform 0.55s var(--courbe);
+}
+
+.js [data-monte].vu {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .js [data-monte] {
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media print {
+  .entete,
+  .barre-basse,
+  .bandeau {
+    display: none;
+  }
+
+  body {
+    padding-bottom: 0;
+  }
+}

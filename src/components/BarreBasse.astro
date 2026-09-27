@@ -1,0 +1,124 @@
+---
+/**
+ * LA BARRE BASSE — LES TROIS ACTIONS, SOUS LE POUCE.
+ *
+ * C'est la pièce maîtresse du site sur téléphone. Quelqu'un dont la clim vient
+ * de lâcher ne lit pas une page : il cherche un bouton. Les trois sont donc
+ * toujours là, à portée du pouce, quelle que soit la position dans la page.
+ *
+ * L'ORDRE COMPTE. Le dépannage à gauche, en braise, parce que c'est la
+ * demande la plus pressée ; le devis au centre, en givre, parce que c'est la
+ * plus fréquente ; l'appel à droite, sobre, pour qui préfère la voix.
+ *
+ * Elle DISPARAÎT sur ordinateur : la barre haute y porte déjà le devis, et une
+ * barre fixe en bas d'un grand écran ne fait que manger de la place.
+ *
+ * Elle est dans un repère de navigation nommé : une pastille flottante hors
+ * repère est signalée par axe, et elle est de toute façon plus dure à
+ * retrouver au clavier.
+ */
+import contenu from '../data/contenu.json';
+---
+
+<nav class="barre-basse" aria-label={contenu.ui.navActions}>
+  <a
+    class="action action--urgence"
+    href={contenu.contact.whatsappLien}
+    target="_blank"
+    rel="noopener"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M20 11.5a8 8 0 0 1-11.9 7L4 20l1.6-4A8 8 0 1 1 20 11.5Z"
+        stroke="currentColor"
+        stroke-width="1.9"
+        stroke-linejoin="round"></path>
+    </svg>
+    <span>{contenu.ui.whatsapp}</span>
+    <span class="visuellement-cache">{contenu.ui.nouvelOnglet}</span>
+  </a>
+
+  <a class="action action--devis" href="/devis/">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M6 3h8l4 4v14H6V3Z"
+        stroke="currentColor"
+        stroke-width="1.9"
+        stroke-linejoin="round"></path>
+      <path d="M14 3v4h4M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"></path>
+    </svg>
+    <span>{contenu.ui.devis}</span>
+  </a>
+
+  <a class="action action--appel" href={contenu.contact.telephoneLien}>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A15 15 0 0 1 4 5a1 1 0 0 1 1-1Z"
+        stroke="currentColor"
+        stroke-width="1.9"
+        stroke-linejoin="round"></path>
+    </svg>
+    <span>{contenu.ui.appeler}</span>
+  </a>
+</nav>
+
+<style>
+  .barre-basse {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 80;
+    display: grid;
+    /* Trois colonnes égales qui savent se rétrécir : le « min » évite le
+       piège classique d'une largeur minimale en rem, qui grandit avec la
+       taille du texte et finit par dépasser l'écran. */
+    grid-template-columns: repeat(3, minmax(min(6rem, 33%), 1fr));
+    gap: 1px;
+    background: var(--trait);
+    border-top: 1px solid var(--trait);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  @media (min-width: 60rem) {
+    .barre-basse {
+      display: none;
+    }
+  }
+
+  .action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    /* 68 px de haut : la cible entière est confortable au pouce, y compris
+       en tenant le téléphone d'une main. */
+    min-height: 4.25rem;
+    padding: 0.5rem 0.35rem;
+    font-size: var(--t-kicker);
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .action span:not(.visuellement-cache) {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .action--urgence {
+    background: var(--braise);
+    color: var(--encre-claire);
+  }
+
+  .action--devis {
+    background: var(--givre);
+    color: var(--encre-claire);
+  }
+
+  .action--appel {
+    background: var(--surface);
+    color: var(--encre);
+  }
+</style>

@@ -1,0 +1,48 @@
+{
+  "name": "frelakaz",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22 <23"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "photos": "node scripts/photos.mjs",
+    "servir": "node scripts/servir.mjs",
+    "captures": "node scripts/captures.mjs",
+    "icones": "node scripts/icones.mjs",
+    "audit": "node scripts/audit.mjs",
+    "sonde": "node scripts/eprouver-sonde.mjs",
+    "interactions": "node scripts/interactions.mjs",
+    "acces": "node scripts/acces.mjs",
+    "metriques": "node scripts/metriques.mjs",
+    "poids": "node scripts/poids.mjs",
+    "tout": "npm run check && npm run build && npm run redaction && npm run sonde && npm run audit && npm run interactions && npm run acces && npm run adresses && npm run metriques",
+    "polices": "node scripts/polices.mjs",
+    "redaction": "node scripts/redaction.mjs",
+    "adresses": "node scripts/adresses.mjs",
+    "planches": "node scripts/planches.mjs"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.10",
+    "astro": "^5.18.2",
+    "sharp": "^0.35.3",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.0",
+    "axe-core": "^4.13.0",
+    "html-validate": "^11.11.0",
+    "lighthouse": "^13.5.0",
+    "playwright": "1.62.1"
+  },
+  "allowScripts": {
+    "sharp@0.34.5": true,
+    "sharp@0.35.5": true,
+    "esbuild@0.27.7": true,
+    "esbuild@0.25.12": true
+  }
+}

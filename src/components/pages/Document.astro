@@ -1,0 +1,139 @@
+---
+/**
+ * LES PAGES LÉGALES.
+ *
+ * Un seul gabarit pour les deux : même structure, même rythme. Le contenu
+ * vient du fichier de données, où un élément de « corps » est soit un
+ * paragraphe, soit une liste.
+ *
+ * LE COURRIEL EST CELUI DE L'ÉDITEUR RÉEL, et non celui de l'entreprise
+ * imaginaire : on n'exerce pas ses droits auprès d'une société qui n'existe
+ * pas. Le gabarit remplace donc {courriel} par l'adresse de Studio Mathys.
+ */
+import contenu from '../../data/contenu.json';
+
+interface Props {
+  cle: 'mentions' | 'confidentialite';
+}
+const { cle } = Astro.props;
+const doc = contenu.legal[cle];
+
+/** Remplace les gabarits, les liens Markdown et le gras. Rien d'autre. */
+const enrichir = (texte: string) =>
+  texte
+    .replaceAll('{courriel}', contenu.demo.auteurCourriel)
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+---
+
+<section class="section section--premiere" aria-labelledby="doc-titre">
+  <div class="enveloppe doc">
+    <nav class="fil" aria-label={contenu.ui.navFil}>
+      <a class="fil__lien" href="/">{contenu.site.nom}</a>
+    </nav>
+    <h1 class="doc__titre" id="doc-titre">{doc.titre}</h1>
+    <p class="doc__maj chiffre">{doc.maj}</p>
+
+    {
+      doc.sections.map((s) => (
+        <section class="doc__section">
+          <h2 class="doc__sous">{s.titre}</h2>
+          {
+            s.corps.map((bloc) =>
+              Array.isArray(bloc) ? (
+                <ul class="doc__liste">
+                  {bloc.map((l) => <li set:html={enrichir(l)} />)}
+                </ul>
+              ) : (
+                <p class="doc__p" set:html={enrichir(bloc)} />
+              ),
+            )
+          }
+        </section>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .doc {
+    max-width: 48rem;
+  }
+
+  .fil {
+    margin-bottom: 1.25rem;
+    font-size: var(--t-petit);
+  }
+
+  .fil__lien {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    margin-block: -0.7rem;
+    color: var(--encre-3);
+    text-decoration: none;
+  }
+
+  .fil__lien:hover {
+    color: var(--encre);
+  }
+
+  .doc__titre {
+    font-size: var(--t-titre);
+    max-width: 18ch;
+  }
+
+  .doc__maj {
+    margin-top: 0.75rem;
+    font-size: var(--t-kicker);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--encre-3);
+    overflow-wrap: anywhere;
+  }
+
+  .doc__section {
+    margin-top: clamp(2rem, 1.6rem + 1.8vw, 2.75rem);
+  }
+
+  .doc__sous {
+    font-size: var(--t-sous);
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--trait);
+  }
+
+  .doc__p,
+  .doc__liste {
+    margin-top: 1rem;
+    font-size: var(--t-petit);
+    line-height: 1.75;
+    color: var(--encre-2);
+  }
+
+  .doc__liste {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .doc__liste li {
+    display: flex;
+    gap: 0.7rem;
+  }
+
+  .doc__liste li::before {
+    content: '';
+    flex: none;
+    width: 0.5rem;
+    height: 1px;
+    margin-top: 0.9em;
+    background: var(--givre);
+  }
+
+  .doc__p :global(a),
+  .doc__liste :global(a) {
+    color: var(--givre);
+    text-underline-offset: 0.2em;
+    /* Une adresse plus large que la ligne se replie plutôt que de déborder. */
+    overflow-wrap: anywhere;
+  }
+</style>

@@ -1,0 +1,41 @@
+{
+  "$": "LES PHOTOGRAPHIES ET LEURS AUTEURS, dans un seul fichier. Le script scripts/photos.mjs les rapatrie, les met à l'échelle, les étalonne de la même main et les écrit SANS métadonnées — ni EXIF, ni position GPS. CREDITS.md est engendré depuis ce fichier : un auteur ne peut donc pas manquer à l'appel.",
+  "$choix": "Toutes ont été regardées en grand avant d'être retenues. Trois candidates portaient une marque de fabricant lisible (Daikin, Mitsubishi, Carrier) et ont été écartées ; une chambre a été écartée pour un arbre nu et une moquette derrière la vitre, impossibles en Guadeloupe.",
+  "source": "Unsplash",
+  "licence": "Licence Unsplash",
+  "licenceLien": "https://unsplash.com/fr/licence",
+  "items": [
+    {
+      "id": "ouverture",
+      "unsplash": "1724488751821-1415f5cf4960",
+      "page": "https://unsplash.com/fr/photos/un-climatiseur-situe-a-lexterieur-dun-batiment-_7huNth8Y2s",
+      "auteur": "yanagi",
+      "sujet": "Groupe extérieur posé devant un rideau métallique turquoise, ombre de palme portée sur la tôle",
+      "largeur": 2400
+    },
+    {
+      "id": "facade-trois-groupes",
+      "unsplash": "1601993198415-19d86ae28424",
+      "page": "https://unsplash.com/fr/photos/ventilateur-de-boite-noir-et-gris-bpq1X06_yHQ",
+      "auteur": "Jose Antonio Gallego Vázquez",
+      "sujet": "Trois groupes extérieurs sur supports muraux, de part et d'autre d'une fenêtre à persienne, mur ocre",
+      "largeur": 1600
+    },
+    {
+      "id": "toiture-commerciale",
+      "unsplash": "1698479603408-1a66a6d9e80f",
+      "page": "https://unsplash.com/fr/photos/un-groupe-de-climatiseurs-assis-les-uns-a-cote-des-autres-l_Vn4HlFQVw",
+      "auteur": "Kettenreaktion",
+      "sujet": "Plusieurs groupes de forte puissance alignés en toiture, entre les gaines et les collecteurs",
+      "largeur": 1600
+    },
+    {
+      "id": "avant-entretien",
+      "unsplash": "1665826254168-b6c193daa720",
+      "page": "https://unsplash.com/fr/photos/une-jardiniere-a-lexterieur-avec-une-plante-qui-en-pousse-lw2RgPJg9CI",
+      "auteur": "Prasopchok",
+      "sujet": "Groupe extérieur envahi par la végétation, ailettes encrassées, mur carrelé d'un bâtiment tropical",
+      "largeur": 1600
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+---
+/** Netlify la sert sous « 404.html » dès qu'une adresse ne correspond à aucun
+ *  fichier. Elle garde l'entête, le pied et la barre basse : on n'a pas quitté
+ *  le site, on s'est trompé de porte. */
+import Base from '../layouts/Base.astro';
+import contenu from '../data/contenu.json';
+const e = contenu.egaree;
+---
+
+<Base titre={`${e.titre} — ${contenu.site.nom}`} description={e.description} noindex>
+  <section class="section section--premiere" aria-labelledby="egaree-titre">
+    <div class="enveloppe egaree">
+      <p class="rail chiffre">{e.code}</p>
+      <h1 class="egaree__titre" id="egaree-titre">{e.titre}</h1>
+      <p class="egaree__texte">{e.texte}</p>
+      <div class="egaree__actions">
+        <a class="bouton bouton--principal" href="/devis/">{contenu.devis.titre}</a>
+        <a class="bouton bouton--urgence" href={contenu.contact.whatsappLien} target="_blank" rel="noopener">
+          {contenu.depannage.action}
+          <span class="visuellement-cache">{contenu.ui.nouvelOnglet}</span>
+        </a>
+        <a class="bouton bouton--second" href="/">{e.action}</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .egaree { max-width: 44rem; }
+  .egaree__titre { margin-top: 0.75rem; font-size: var(--t-titre); max-width: 16ch; }
+  .egaree__texte { margin-top: 1.125rem; max-width: 52ch; color: var(--encre-2); }
+  .egaree__actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 2rem; }
+</style>

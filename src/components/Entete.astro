@@ -1,0 +1,262 @@
+---
+/**
+ * LA BARRE HAUTE.
+ *
+ * Collante, jamais masquée : sur un site qu'on consulte en marchant, savoir
+ * où l'on va doit rester possible à tout instant.
+ *
+ * SUR TÉLÉPHONE, ELLE EST VOLONTAIREMENT PAUVRE : la marque et un bouton dont
+ * le mot « Menu » est ÉCRIT — les deux traits ne sont qu'un renfort. Les trois
+ * actions ne sont pas ici : elles vivent dans la barre basse, sous le pouce,
+ * où on les atteint sans remonter.
+ *
+ * Le panneau est un <details> : ouverture, clavier et annonce aux lecteurs
+ * d'écran viennent du navigateur, et il fonctionne sans une ligne de script.
+ */
+import contenu from '../data/contenu.json';
+import Marque from './Marque.astro';
+
+const { sections, pages, documents } = contenu.navigation;
+const ici = Astro.url.pathname;
+---
+
+<header class="entete">
+  <div class="entete__interieur">
+    <Marque />
+
+    <nav class="menu" aria-label={contenu.ui.navPrincipale}>
+      {sections.map((s) => <a class="menu__lien" href={s.href}>{s.label}</a>)}
+    </nav>
+
+    <a class="bouton bouton--principal entete__action" href="/devis/">{contenu.ui.devis}</a>
+
+    <details class="mobile" data-menu>
+      <summary class="mobile__bouton" data-menu-bouton aria-expanded="false">
+        <span>{contenu.ui.menu}</span>
+        <span class="mobile__traits" aria-hidden="true"><span></span><span></span></span>
+      </summary>
+      {/* La glissière n'existe que pour animer la hauteur : c'est elle qui
+          passe de 0fr à 1fr, le panneau se contentant de rogner ce qui
+          dépasse. Une hauteur en pixels aurait demandé de la mesurer. */}
+      <div class="mobile__glissiere">
+        {/* Le panneau ne porte NI remplissage NI bordure : sur une glissière
+            en 0fr la piste tombe à zéro, mais un remplissage posé sur
+            l'élément de grille continue de s'afficher. */}
+        <div class="mobile__panneau">
+          <div class="mobile__interieur">
+            <nav class="mobile__liste" aria-label={contenu.ui.navPrincipale}>
+              {
+                [...pages, ...sections].map((s) => (
+                  <a
+                    class="mobile__lien"
+                    href={s.href}
+                    aria-current={ici === s.href ? 'page' : undefined}
+                  >
+                    {s.label}
+                  </a>
+                ))
+              }
+            </nav>
+            {/* UN NOM À ELLE. Menu ouvert, cette liste et celle du pied de
+                page sont toutes deux dans l'arbre : deux repères portant
+                « Documents » se confondent à l'oreille d'un lecteur d'écran. */}
+            <nav class="mobile__docs" aria-label={contenu.ui.navDocumentsMenu}>
+              {documents.map((d) => <a class="mobile__doc" href={d.href}>{d.label}</a>)}
+            </nav>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+</header>
+
+<style>
+  .entete {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    background: color-mix(in srgb, var(--fond) 92%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--trait);
+    padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+  }
+
+  .entete__interieur {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: var(--h-entete);
+    max-width: var(--largeur);
+    margin-inline: auto;
+    padding-inline: var(--marge);
+  }
+
+  .menu,
+  .entete__action {
+    display: none;
+  }
+
+  @media (min-width: 60rem) {
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: clamp(1rem, 0.4rem + 1.6vw, 2rem);
+      margin-left: auto;
+    }
+
+    .entete__action {
+      display: inline-flex;
+      min-height: 2.5rem;
+      padding-block: 0.5rem;
+    }
+
+    .mobile {
+      display: none;
+    }
+  }
+
+  .menu__lien {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--t-petit);
+    color: var(--encre-2);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .menu__lien:hover {
+    color: var(--encre);
+    border-bottom-color: var(--givre);
+  }
+
+  /* --- Le panneau de téléphone -------------------------------------- */
+  .mobile {
+    margin-left: auto;
+  }
+
+  .mobile__bouton {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 2.75rem;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--trait-champ);
+    border-radius: var(--rayon);
+    font-size: var(--t-petit);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .mobile__bouton::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile__traits {
+    display: grid;
+    gap: 4px;
+    width: 16px;
+  }
+
+  .mobile__traits span {
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+  }
+
+  .mobile__glissiere {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: var(--fond);
+    border-bottom: 1px solid var(--trait);
+    display: grid;
+    grid-template-rows: 1fr;
+  }
+
+  .mobile__panneau {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .mobile__interieur {
+    padding: 0.25rem var(--marge) 1.25rem;
+    /* Le panneau défile si les entrées dépassent l'écran, en paysage par
+       exemple. « dvh » suit la barre d'adresse mobile, « vh » non. */
+    max-height: calc(100dvh - var(--h-entete));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .mobile__liste,
+  .mobile__docs {
+    display: grid;
+    /* La piste ne se règle jamais sur son contenu : une entrée longue
+       élargirait le panneau au lieu de se replier. */
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .mobile__lien {
+    display: flex;
+    align-items: center;
+    min-height: 3.25rem;
+    border-bottom: 1px solid var(--trait);
+    font-size: 1.1875rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .mobile__lien[aria-current='page'] {
+    color: var(--givre);
+  }
+
+  .mobile__docs {
+    margin-top: 1rem;
+  }
+
+  .mobile__doc {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-size: var(--t-petit);
+    color: var(--encre-3);
+    text-decoration: none;
+  }
+</style>
+
+<script>
+  /**
+   * LE PANNEAU DE TÉLÉPHONE.
+   *
+   * Le <details> fait déjà l'essentiel. Le script ajoute trois choses que le
+   * navigateur ne fait pas : l'annonce de l'état au lecteur d'écran, la
+   * fermeture par Échap et par un clic au-dehors, et le repli quand la
+   * fenêtre s'élargit au-delà du seuil de la barre d'ordinateur — sans quoi
+   * un panneau resté ouvert continuerait de verrouiller la page.
+   */
+  const details = document.querySelector<HTMLDetailsElement>('[data-menu]');
+  const bouton = document.querySelector<HTMLElement>('[data-menu-bouton]');
+
+  if (details && bouton) {
+    const annonce = () => bouton.setAttribute('aria-expanded', String(details.open));
+    details.addEventListener('toggle', annonce);
+    annonce();
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape' || !details.open) return;
+      details.open = false;
+      bouton.focus();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!details.open) return;
+      if (e.target instanceof Node && details.contains(e.target)) return;
+      details.open = false;
+    });
+
+    matchMedia('(min-width: 60rem)').addEventListener('change', (e) => {
+      if (e.matches) details.open = false;
+    });
+  }
+</script>

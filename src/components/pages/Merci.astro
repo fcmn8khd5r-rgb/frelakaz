@@ -1,0 +1,93 @@
+---
+/**
+ * LA CONFIRMATION.
+ *
+ * Une VRAIE page, atteinte par une redirection de la fonction : elle est
+ * rechargeable, partageable, et lisible sans JavaScript. Un formulaire qui
+ * afficherait sa confirmation en remplaçant un morceau de page laisserait un
+ * navigateur sans script devant du JSON brut.
+ *
+ * Elle redit que rien n'a été envoyé. C'est la dernière chose que lit le
+ * visiteur, et c'est là qu'il pourrait croire qu'un artisan va le rappeler.
+ */
+import contenu from '../../data/contenu.json';
+
+interface Props {
+  type: 'devis' | 'rendezvous';
+}
+const { type } = Astro.props;
+const m = contenu.merci[type];
+---
+
+<section class="section section--premiere" aria-labelledby="merci-titre">
+  <div class="enveloppe merci">
+    <p class="merci__coche" aria-hidden="true">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+        <path d="m4 12.5 5.2 5.2L20 6.9" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </p>
+
+    <p class="rail" id="merci-titre">{m.rail}</p>
+    <h1 class="merci__titre">{m.titre}</h1>
+    <p class="merci__texte">{m.texte}</p>
+
+    <p class="merci__rappel">{contenu.merci.rappel}</p>
+
+    <div class="merci__actions">
+      <a class="bouton bouton--urgence" href={contenu.contact.whatsappLien} target="_blank" rel="noopener">
+        {contenu.merci.actionWhatsapp}
+        <span class="visuellement-cache">{contenu.ui.nouvelOnglet}</span>
+      </a>
+      <a class="bouton bouton--second" href="/">{contenu.merci.actionAccueil}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .merci {
+    max-width: 44rem;
+  }
+
+  .merci__coche {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    margin-bottom: 1.5rem;
+    background: var(--givre-pale);
+    color: var(--givre);
+    border-radius: 999px;
+  }
+
+  .merci__titre {
+    margin-top: 0.75rem;
+    font-size: var(--t-titre);
+    max-width: 14ch;
+  }
+
+  .merci__texte {
+    margin-top: 1.125rem;
+    max-width: 52ch;
+    color: var(--encre-2);
+  }
+
+  .merci__rappel {
+    margin-top: 1.5rem;
+    padding: 0.85rem 1rem;
+    background: var(--givre-pale);
+    border-left: 3px solid var(--givre);
+    border-radius: 0 var(--rayon) var(--rayon) 0;
+    font-size: var(--t-petit);
+    line-height: 1.6;
+    color: var(--encre-2);
+    max-width: 60ch;
+  }
+
+  .merci__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+  }
+</style>

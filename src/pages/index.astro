@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import Accueil from '../components/pages/Accueil.astro';
+import { prechargeOuverture } from '../lib/ouverture';
+import contenu from '../data/contenu.json';
+
+/* Le préchargement est posé par la PAGE, parce que c'est elle qui tient la
+   tête du document — et il demande les mêmes largeurs que l'affichage. */
+const precharge = await prechargeOuverture();
+---
+
+<Base titre={contenu.site.titre} description={contenu.site.description} precharge={precharge}>
+  <Accueil />
+</Base>

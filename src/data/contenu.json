@@ -1,0 +1,581 @@
+{
+  "$": "LE SEUL FICHIER À MODIFIER. Aucun texte n'est écrit en dur dans un composant. Les clés commençant par $ sont des notes d'édition ; elles ne s'affichent jamais.",
+  "site": {
+    "url": "https://frelakaz.netlify.app",
+    "nom": "Fré Lakaz",
+    "nomComplet": "Fré Lakaz — Climatisation",
+    "metier": "Installation, entretien et dépannage de climatisation",
+    "commune": "Baie-Mahault",
+    "titre": "Fré Lakaz — climatisation en Guadeloupe : installation, entretien, dépannage",
+    "description": "Installation, entretien et dépannage de climatisation en Guadeloupe. Devis sous 24 h, rendez-vous d’entretien en ligne, dépannage joignable tout de suite. Site de démonstration.",
+    "$accroche": "Trois lignes. La dernière porte l'accent. Elle doit se comprendre debout, dehors, sur un téléphone, par quelqu'un dont la clim vient de lâcher.",
+    "accroche1": "Votre clim",
+    "accroche2": "remarche",
+    "accroche3": "cette semaine.",
+    "sousTitre": "Installation, entretien et dépannage en Guadeloupe. Un devis chiffré sous 24 heures, un rendez-vous d’entretien pris en ligne, et le dépannage joignable tout de suite.",
+    "kickerGauche": "Climatisation",
+    "kickerDroite": "Installation · Entretien · Dépannage",
+    "$reperes": "Trois repères, clé à gauche, valeur à droite. Ce sont les trois questions qu'on se pose avant d'appeler.",
+    "reperes": [
+      {
+        "cle": "Devis",
+        "valeur": "chiffré sous 24 h"
+      },
+      {
+        "cle": "Zone d’intervention",
+        "valeur": "32 communes"
+      },
+      {
+        "cle": "Dépannage",
+        "valeur": "réponse le jour même"
+      }
+    ],
+    "$ouverture": "La photographie du premier écran : un groupe extérieur devant un rideau turquoise, ombre de palme portée. Aucune marque de fabricant n'y figure. C'est elle qui décide du temps de premier affichage : elle est préchargée.",
+    "altOuverture": "Groupe extérieur de climatisation posé devant un rideau métallique turquoise, l’ombre d’une palme portée sur la tôle"
+  },
+  "demo": {
+    "$": "LE BANDEAU DE DÉMONSTRATION, en tête de chaque page, avant tout le reste. Il nomme l'entreprise fictive ET l'auteur réel du site : un visiteur ne doit jamais croire qu'il a affaire à un vrai artisan, ni un artisan croire que je montre le site d'un concurrent.",
+    "texte": "Site de démonstration — Fré Lakaz est une entreprise imaginaire",
+    "auteur": "Studio Mathys",
+    "auteurLien": "https://studiomathysbocage.fr",
+    "auteurLibelle": "Réalisé par Studio Mathys",
+    "formulaire": "Démonstration : ce formulaire vérifie votre demande et vous montre le récapitulatif. Rien n’est envoyé, rien n’est conservé.",
+    "auteurCourriel": "contact@studiomathysbocage.fr",
+    "$courriel": "Le gabarit des pages légales remplace {courriel} par CETTE adresse, et non par celle de Fré Lakaz, qui n'existe pas : on n'exerce pas ses droits auprès d'une entreprise imaginaire."
+  },
+  "contact": {
+    "$": "LA SEULE SOURCE du numéro et de l'adresse. Le numéro est le numéro professionnel de Mathys : les démonstrations mènent à lui, et le message WhatsApp pré-rempli dit d'où vient le visiteur.",
+    "telephone": "0690 30 50 37",
+    "telephoneLien": "tel:+590690305037",
+    "whatsapp": "0690 30 50 37",
+    "whatsappLien": "https://wa.me/590690305037?text=Bonjour%2C%20je%20vous%20%C3%A9cris%20depuis%20le%20site%20de%20d%C3%A9monstration%20Fr%C3%A9%20Lakaz.%20Je%20cherche%20un%20d%C3%A9panneur%20climatisation%20en%20Guadeloupe.",
+    "email": "contact@frelakaz.gp",
+    "horaires": "Du lundi au vendredi, 7 h - 17 h. Samedi matin sur rendez-vous.",
+    "delaiReponse": "Réponse sous 24 heures ouvrées."
+  },
+  "prestations": {
+    "$": "Trois prestations, dans l'ordre où on les cherche. SEUL L'ENTRETIEN porte des prix : c'est la seule prestation dont le contenu est constant. Une installation dépend du bâtiment, un dépannage de la panne — annoncer un prix là serait annoncer un prix faux.",
+    "rail": "Prestations",
+    "accroche": "Trois métiers, un seul interlocuteur.",
+    "intro": "L’entretien est affiché. Le reste se chiffre après une visite, parce qu’un mur de parpaing et une cloison ne se percent pas pareil.",
+    "items": [
+      {
+        "id": "installation",
+        "nom": "Installation",
+        "resume": "Du conseil de puissance à la mise en service, en une intervention.",
+        "prix": null,
+        "prixMention": "Sur devis, après visite",
+        "lignes": [
+          "Visite sur place : surface, orientation, hauteur sous plafond, ouvertures",
+          "Choix de la puissance et de l’emplacement des unités",
+          "Pose, liaison frigorifique, évacuation des condensats, raccordement",
+          "Mise en service, essai en votre présence et prise en main",
+          "Reprise des emballages et de l’ancien appareil"
+        ],
+        "action": "Demander un devis",
+        "actionLien": "/devis/?besoin=installation"
+      },
+      {
+        "id": "entretien",
+        "nom": "Entretien",
+        "resume": "Filtres, échangeurs, étanchéité, condensats : l’appareil retrouve son souffle.",
+        "prix": 95,
+        "prixMention": "à partir de",
+        "lignes": [
+          "Nettoyage des filtres et de l’échangeur intérieur",
+          "Nettoyage de l’unité extérieure et de ses ailettes",
+          "Contrôle d’étanchéité du circuit frigorifique",
+          "Débouchage et contrôle de l’évacuation des condensats",
+          "Mesure des températures et compte rendu écrit"
+        ],
+        "action": "Prendre rendez-vous",
+        "actionLien": "/rendez-vous/",
+        "$tarifs": "Les trois lignes de prix de l'entretien. Elles sont « à partir de » : le nombre d'unités et leur accès font varier le temps passé.",
+        "tarifs": [
+          {
+            "nom": "Un split",
+            "prix": 95,
+            "detail": "une unité intérieure et son groupe"
+          },
+          {
+            "nom": "Multi-split, 2 à 4 unités",
+            "prix": 165,
+            "detail": "un groupe, plusieurs pièces"
+          },
+          {
+            "nom": "Contrat annuel, deux passages",
+            "prix": 210,
+            "detail": "résiliable à tout moment"
+          }
+        ]
+      },
+      {
+        "id": "depannage",
+        "nom": "Dépannage",
+        "resume": "Elle ne refroidit plus, elle coule, elle siffle, elle s’arrête.",
+        "prix": null,
+        "prixMention": "Diagnostic annoncé avant l’intervention",
+        "lignes": [
+          "Premier échange par téléphone ou WhatsApp, pour cerner la panne",
+          "Déplacement et diagnostic, dont le montant vous est dit avant le départ",
+          "Réparation le jour même quand la pièce est en stock",
+          "Devis écrit dès qu’une pièce doit être commandée",
+          "Remise en service et essai devant vous"
+        ],
+        "action": "Écrire sur WhatsApp",
+        "actionLien": "whatsapp"
+      }
+    ]
+  },
+  "depannage": {
+    "$": "Le bloc d'urgence. Il vient TÔT sur l'accueil : quelqu'un dont la clim a lâché ne lit pas une page, il cherche un bouton. Le message WhatsApp est pré-rempli et mentionne la démonstration.",
+    "rail": "Dépannage",
+    "accroche": "Elle s’est arrêtée aujourd’hui ?",
+    "texte": "Écrivez-moi sur WhatsApp avec la marque de l’appareil et ce qu’il fait. Je vous réponds le jour même et je vous dis tout de suite si c’est réparable sur place.",
+    "action": "Écrire sur WhatsApp",
+    "actionSecondaire": "Appeler",
+    "horaires": "Du lundi au vendredi, 7 h - 17 h. Samedi matin sur rendez-vous."
+  },
+  "zone": {
+    "$": "Les 32 communes de Guadeloupe, groupées par délai d'intervention plutôt que par géographie : c'est le délai que le visiteur cherche, pas la carte.",
+    "rail": "Zone d’intervention",
+    "accroche": "Toute la Guadeloupe, à des délais différents.",
+    "intro": "L’atelier est à Baie-Mahault. Plus on s’en éloigne, plus le déplacement se groupe avec d’autres rendez-vous.",
+    "groupes": [
+      {
+        "nom": "Autour de l’atelier",
+        "delai": "Le jour même",
+        "communes": [
+          "Baie-Mahault",
+          "Les Abymes",
+          "Pointe-à-Pitre",
+          "Le Gosier",
+          "Lamentin",
+          "Petit-Bourg"
+        ]
+      },
+      {
+        "nom": "Grande-Terre",
+        "delai": "Sous 48 heures",
+        "communes": [
+          "Sainte-Anne",
+          "Saint-François",
+          "Le Moule",
+          "Morne-à-l’Eau",
+          "Petit-Canal",
+          "Port-Louis",
+          "Anse-Bertrand"
+        ]
+      },
+      {
+        "nom": "Basse-Terre",
+        "delai": "Sous 48 heures",
+        "communes": [
+          "Goyave",
+          "Capesterre-Belle-Eau",
+          "Trois-Rivières",
+          "Vieux-Fort",
+          "Gourbeyre",
+          "Basse-Terre",
+          "Saint-Claude",
+          "Baillif",
+          "Vieux-Habitants",
+          "Bouillante",
+          "Pointe-Noire",
+          "Deshaies",
+          "Sainte-Rose"
+        ]
+      },
+      {
+        "nom": "Marie-Galante, les Saintes, la Désirade",
+        "delai": "Journées groupées, sur rendez-vous",
+        "communes": [
+          "Grand-Bourg",
+          "Capesterre-de-Marie-Galante",
+          "Saint-Louis",
+          "Terre-de-Haut",
+          "Terre-de-Bas",
+          "La Désirade"
+        ]
+      }
+    ],
+    "note": "Le déplacement vers les îles du Sud est chiffré au devis, et il est partagé quand plusieurs rendez-vous tombent la même journée."
+  },
+  "devis": {
+    "$": "LE FORMULAIRE, PENSÉ POUR LE POUCE. Sept questions, dont quatre se répondent d'un doigt. La liste des communes n'est PAS écrite ici : elle se lit dans zone.groupes, qui est sa source. Le champ leurre porte un vrai libellé pour les lecteurs d'écran.",
+    "rail": "Demande de devis",
+    "accroche": "Sept questions, deux minutes.",
+    "intro": "Plus la demande est précise, plus le devis l’est. Les photos comptent double : elles montrent l’accès, le mur et l’existant.",
+    "titre": "Demander un devis",
+    "description": "Demande de devis pour l’installation, l’entretien ou le dépannage d’une climatisation en Guadeloupe. Réponse chiffrée sous 24 heures ouvrées.",
+    "besoinLabel": "Votre besoin",
+    "besoins": [
+      {
+        "id": "installation",
+        "nom": "Installation",
+        "detail": "poser une nouvelle climatisation"
+      },
+      {
+        "id": "entretien",
+        "nom": "Entretien",
+        "detail": "nettoyer et contrôler l’existant"
+      },
+      {
+        "id": "depannage",
+        "nom": "Dépannage",
+        "detail": "elle fonctionne mal ou plus du tout"
+      }
+    ],
+    "piecesLabel": "Combien de pièces à climatiser ?",
+    "piecesAide": "Une unité intérieure par pièce, en général.",
+    "piecesMoins": "Une pièce de moins",
+    "piecesPlus": "Une pièce de plus",
+    "surfaceLabel": "Surface approximative",
+    "surfaceAide": "En mètres carrés, au jugé. Elle sert à estimer la puissance.",
+    "surfaceUnite": "m²",
+    "communeLabel": "Votre commune",
+    "communeDefaut": "Choisissez dans la liste",
+    "delaiLabel": "Quand souhaitez-vous l’intervention ?",
+    "delais": [
+      {
+        "id": "urgent",
+        "nom": "Dès que possible"
+      },
+      {
+        "id": "quinzaine",
+        "nom": "Dans la quinzaine"
+      },
+      {
+        "id": "mois",
+        "nom": "Dans le mois"
+      },
+      {
+        "id": "renseigne",
+        "nom": "Je me renseigne"
+      }
+    ],
+    "photosLabel": "Photos de l’existant",
+    "photosAide": "L’appareil, le mur, l’emplacement du groupe extérieur. Jusqu’à quatre photos, 5 Mo chacune.",
+    "photosChoisir": "Ajouter des photos",
+    "nomLabel": "Votre nom",
+    "telephoneLabel": "Votre téléphone",
+    "telephoneAide": "Un numéro joignable en journée, WhatsApp si vous préférez.",
+    "courrielLabel": "Votre courriel",
+    "courrielAide": "Pour recevoir le devis écrit.",
+    "messageLabel": "Autre chose à préciser ?",
+    "consentementLabel": "J’accepte d’être recontacté au sujet de cette demande.",
+    "obligatoire": "obligatoire",
+    "facultatif": "facultatif",
+    "envoyer": "Envoyer ma demande",
+    "potLabel": "Laissez ce champ vide",
+    "reserve": "Les informations envoyées servent à établir le devis et à vous répondre."
+  },
+  "rendezvous": {
+    "$": "LES CRÉNEAUX viennent du module partagé src/lib/rendezvous.mjs, importé par la page ET par la fonction : deux calculs finiraient par diverger, et l'affiché contredirait le confirmé. Le calendrier n'ouvre que ce qu'il acceptera.",
+    "rail": "Rendez-vous d’entretien",
+    "accroche": "Choisissez votre créneau.",
+    "intro": "Un entretien complet demande environ deux heures par unité. Les créneaux affichés sont ceux qui restent.",
+    "titre": "Prendre rendez-vous",
+    "description": "Prise de rendez-vous en ligne pour l’entretien d’une climatisation en Guadeloupe. Créneaux du lundi au vendredi.",
+    "jourLabel": "Choisissez un jour",
+    "creneauLabel": "Choisissez un créneau",
+    "libre": "Libre",
+    "pris": "Déjà pris",
+    "aucunCreneau": "Ce jour est complet. Les jours voisins offrent encore des créneaux.",
+    "confirmer": "Confirmer le rendez-vous",
+    "recapitulatif": "Votre rendez-vous",
+    "duree": "Environ deux heures",
+    "motifs": {
+      "date-passee": "Ce jour est passé. Choisissez une date à venir.",
+      "ferme": "Les créneaux en ligne vont du lundi au vendredi, jours fériés exceptés. Le samedi matin se prend par message.",
+      "pris": "Ce créneau vient d’être réservé. Choisissez-en un autre.",
+      "inconnu": "Ce créneau ne figure pas au calendrier."
+    },
+    "$motifs": "Chaque refus nomme SA cause. Une date passée et un créneau pris envoient chercher deux choses différentes ; les confondre fait tourner le visiteur en rond."
+  },
+  "realisations": {
+    "$": "TROIS PHOTOGRAPHIES, ET TROIS LÉGENDES QUI DISENT CE QU'ELLES MONTRENT. Le texte a été écrit APRÈS le choix des images, et non l'inverse : une légende qui promet un chantier soigné sous une photographie de groupe encrassé se voit tout de suite. La troisième montre un appareil négligé, et le dit — elle sert l'argument de l'entretien mieux qu'une image flatteuse.",
+    "rail": "Sur le terrain",
+    "accroche": "Trois situations, trois réponses.",
+    "intro": "Ce qu’on rencontre en Guadeloupe : des groupes en façade, des toitures d’entreprise, et des appareils qu’on a laissés faire.",
+    "mention": "Photographies de banque d’images, étalonnées de la même main. Fré Lakaz est une entreprise imaginaire : ces images montrent des situations du métier, pas des chantiers réels. Les auteurs sont cités dans le dépôt du site.",
+    "items": [
+      {
+        "id": "facade-trois-groupes",
+        "nom": "Trois groupes en façade",
+        "lieu": "Le Gosier",
+        "texte": "Trois unités sur supports muraux, de part et d’autre d’une persienne. Posées du côté que le soleil quitte l’après-midi : un groupe qui cuit consomme davantage pour le même froid."
+      },
+      {
+        "id": "toiture-commerciale",
+        "nom": "Toiture d’un local",
+        "lieu": "Jarry, Baie-Mahault",
+        "texte": "Plusieurs groupes de forte puissance alignés en toiture, entre les gaines. Au-delà de 12 kW cumulés, l’inspection périodique de la Région s’applique — c’est le cas ici."
+      },
+      {
+        "id": "avant-entretien",
+        "nom": "Avant entretien",
+        "lieu": "Sainte-Rose",
+        "texte": "Voilà ce que devient un groupe qu’on laisse faire : la végétation gagne l’échangeur, l’air ne passe plus, et la facture monte avant que l’appareil rende l’âme. Deux heures suffisent à le remettre en état."
+      }
+    ]
+  },
+  "avis": {
+    "$": "AVIS INVENTÉS, et la mention le dit AVANT de les lire. Jamais d'extraction de Google, jamais de note globale qui ferait croire à un agrégat réel.",
+    "rail": "Avis",
+    "accroche": "Ce que diraient des clients.",
+    "mention": "Ces quatre avis sont inventés pour la démonstration, comme l’entreprise elle-même. Sur le site d’un vrai artisan, ce sont ses avis Google qui prendraient leur place.",
+    "items": [
+      {
+        "nom": "Sylvaine",
+        "lieu": "Petit-Bourg",
+        "texte": "Venu le lendemain de mon message. Le devis était dans ma boîte le soir même, au prix annoncé au téléphone."
+      },
+      {
+        "nom": "Marc-Olivier",
+        "lieu": "Le Moule",
+        "texte": "Trois pièces posées en une journée. Il a pris le temps de m’expliquer comment nettoyer les filtres moi-même."
+      },
+      {
+        "nom": "Jocelyne",
+        "lieu": "Baie-Mahault",
+        "texte": "Contrat d’entretien depuis deux ans. Il prévient une semaine avant, il passe, et le compte rendu arrive par courriel."
+      },
+      {
+        "nom": "Théo",
+        "lieu": "Sainte-Rose",
+        "texte": "La clim coulait dans le salon. Diagnostic en vingt minutes, évacuation débouchée, réglé sur place."
+      }
+    ]
+  },
+  "reglementation": {
+    "$": "LA SEULE RÈGLE DE DROIT CITÉE SUR CE SITE, et elle est LOCALE. La Région Guadeloupe, habilitée par l'article 205 de la loi du 17 août 2015, a pris sa propre délibération : elle déroge au régime national, dont l'application ici n'a pas pu être établie avec certitude. On ne cite donc PAS les articles R224-44 et suivants du code de l'environnement. Relevé sur Légifrance le 27 septembre 2026.",
+    "source": "Délibération du conseil régional de la Guadeloupe du 20 novembre 2020",
+    "sourceLien": "https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000043850978",
+    "sourceLibelle": "Lire la délibération sur Légifrance",
+    "seuil": 12,
+    "periode": 5
+  },
+  "questions": {
+    "$": "Six questions, celles qu'on pose au téléphone. La réponse sur l'entretien nomme le seuil AVANT la règle : la plupart des installations domestiques passent en dessous, et laisser croire l'inverse serait vendre une obligation qui n'existe pas.",
+    "rail": "Questions",
+    "accroche": "Ce qu’on me demande au téléphone.",
+    "items": [
+      {
+        "q": "Quelle puissance pour ma pièce ?",
+        "r": "Un ordre de grandeur admis sous nos latitudes : environ un kilowatt de froid pour dix mètres carrés, dans une pièce ordinaire. C’est un point de départ, pas un calcul. L’orientation, la hauteur sous plafond, la surface vitrée, l’isolation de la toiture et le nombre de personnes présentes font varier le résultat du simple au double. C’est ce que la visite mesure."
+      },
+      {
+        "q": "L’entretien est-il obligatoire ?",
+        "r": "Cela dépend de la puissance, et le seuil est plus haut qu’on ne le croit. En Guadeloupe, la Région a fixé sa propre règle : l’inspection périodique concerne les systèmes de climatisation et les pompes à chaleur réversibles dont la puissance frigorifique nominale utile cumulée dépasse 12 kW, et elle a lieu tous les cinq ans. « Cumulée » désigne la somme des appareils d’un même bâtiment, appartenant au même propriétaire et traitant le même volume : trois splits de 3,5 kW dans une maison font 10,5 kW, donc en dessous. Un plateau de bureaux équipé de quatre unités, lui, passe au-dessus."
+      },
+      {
+        "q": "Alors pourquoi entretenir une petite installation ?",
+        "r": "Pour ce qu’elle vous coûte et pour ce qu’elle dure. Sous nos embruns et notre poussière, un filtre encrassé fait grimper la consommation, puis fait givrer l’échangeur, et le compresseur finit par en souffrir. Un passage par an suffit à la plupart des installations domestiques, et vous nettoyez les filtres vous-même entre deux — je vous montre comment à la mise en service."
+      },
+      {
+        "q": "Sous quel délai intervenez-vous ?",
+        "r": "Autour de l’atelier — Baie-Mahault, Les Abymes, Pointe-à-Pitre, Le Gosier, Lamentin, Petit-Bourg — le jour même pour un dépannage. Sur le reste de l’archipel, sous 48 heures. Vers Marie-Galante, les Saintes et la Désirade, les déplacements se groupent sur une même journée."
+      },
+      {
+        "q": "Quelle garantie ?",
+        "r": "Les appareils posés sont couverts par la garantie de leur fabricant, dont la durée figure au devis. La pose elle-même est garantie un an, pièces et main-d’œuvre. Vos droits légaux s’ajoutent à ces engagements."
+      },
+      {
+        "q": "Comment se passe une pose ?",
+        "r": "Comptez une demi-journée pour un split, une journée pour un multi-split de trois unités. Il faut percer le mur pour la liaison frigorifique, poser le support du groupe extérieur, tirer l’évacuation des condensats et raccorder l’électricité. Prévoyez l’accès au tableau électrique ; le reste vient avec moi."
+      }
+    ]
+  },
+  "merci": {
+    "$": "Les deux pages de confirmation. Elles sont servies par une VRAIE navigation : la fonction redirige, donc elles fonctionnent sans une ligne de script. Hors index.",
+    "devis": {
+      "rail": "Demande reçue",
+      "titre": "Votre demande est partie.",
+      "texte": "Dans la vraie vie, le devis chiffré vous parviendrait sous 24 heures ouvrées, et je vous appellerais avant si un point demandait à être précisé.",
+      "description": "Confirmation de la demande de devis adressée à Fré Lakaz."
+    },
+    "rendezvous": {
+      "rail": "Rendez-vous confirmé",
+      "titre": "C’est noté.",
+      "texte": "Dans la vraie vie, vous recevriez la confirmation par courriel et un rappel la veille. Prévoyez environ deux heures par unité, et un accès au groupe extérieur.",
+      "description": "Confirmation du rendez-vous d’entretien pris auprès de Fré Lakaz."
+    },
+    "rappel": "Ceci est une démonstration : rien n’a été envoyé et rien n’a été conservé.",
+    "actionAccueil": "Retour à l’accueil",
+    "actionWhatsapp": "Écrire sur WhatsApp"
+  },
+  "navigation": {
+    "$": "Quatre entrées dans la barre, et les trois actions à part : demander un devis, prendre rendez-vous, écrire pour un dépannage. Les actions ne sont PAS des entrées de menu — elles vivent dans la barre basse, toujours sous le pouce.",
+    "sections": [
+      {
+        "href": "/#prestations",
+        "label": "Prestations"
+      },
+      {
+        "href": "/#zone",
+        "label": "Zone"
+      },
+      {
+        "href": "/#chantiers",
+        "label": "Chantiers"
+      },
+      {
+        "href": "/#questions",
+        "label": "Questions"
+      }
+    ],
+    "pages": [
+      {
+        "href": "/devis/",
+        "label": "Demander un devis"
+      },
+      {
+        "href": "/rendez-vous/",
+        "label": "Prendre rendez-vous"
+      }
+    ],
+    "documents": [
+      {
+        "href": "/mentions-legales/",
+        "label": "Mentions légales"
+      },
+      {
+        "href": "/confidentialite/",
+        "label": "Confidentialité"
+      }
+    ]
+  },
+  "ui": {
+    "$": "Les libellés de l'interface. Ils vivent ici comme le reste : aucune chaîne en dur dans un composant, et un contrôle automatique le vérifie.",
+    "sautContenu": "Aller au contenu",
+    "menu": "Menu",
+    "fermer": "Fermer",
+    "navPrincipale": "Navigation principale",
+    "navDocuments": "Documents",
+    "navDocumentsMenu": "Documents légaux",
+    "navActions": "Contact rapide",
+    "navFil": "Fil d’Ariane",
+    "retourAccueil": "Retour à l’accueil",
+    "nouvelOnglet": "(nouvel onglet)",
+    "appeler": "Appeler",
+    "whatsapp": "WhatsApp",
+    "devis": "Devis",
+    "rendezVous": "Rendez-vous",
+    "voirPlus": "Voir le détail",
+    "aPartirDe": "à partir de",
+    "euros": "€",
+    "altChantier": "Chantier :"
+  },
+  "egaree": {
+    "$": "La page servie quand l'adresse demandée mène ailleurs.",
+    "code": "404",
+    "titre": "Cette page a déménagé.",
+    "texte": "Voici les chemins les plus courts : les prestations, la demande de devis, et le dépannage.",
+    "action": "Aller à l’accueil",
+    "description": "L’adresse demandée pointe ailleurs sur le site Fré Lakaz."
+  },
+  "legal": {
+    "$": "L'ÉDITEUR RÉEL ET L'ENTREPRISE FICTIVE SONT DISTINGUÉS, en toutes lettres et dès la première section. Aucun SIREN, aucun numéro de certification et aucun label n'est inventé pour Fré Lakaz : les seules coordonnées vérifiables sont celles de l'éditeur du site, qui existe.",
+    "mentions": {
+      "titre": "Mentions légales",
+      "maj": "Dernière mise à jour : 27 septembre 2026",
+      "description": "Éditeur, hébergeur, statut de démonstration et données personnelles du site Fré Lakaz.",
+      "sections": [
+        {
+          "titre": "Nature du site",
+          "corps": [
+            "Ce site est une **démonstration**. Fré Lakaz est une entreprise **imaginaire** : elle n’exerce aucune activité, ne signe aucun contrat et n’encaisse aucune somme. Les chantiers, les avis et les tarifs présentés illustrent un savoir-faire de conception ; ils ne rendent compte d’aucune prestation réelle.",
+            "Aucun numéro de certification, d’assurance ou d’immatriculation n’est attribué à Fré Lakaz, et aucun logo de label ou d’organisme n’est reproduit."
+          ]
+        },
+        {
+          "titre": "Éditeur du site",
+          "corps": [
+            "Le présent site est édité par Mathys Bocage, entrepreneur individuel exerçant sous le nom commercial Studio Mathys.",
+            [
+              "Siège social : 16B Les Jardins de Houëlbourg, Boulevard de Houëlbourg, ZI Jarry, 97122 Baie-Mahault, Guadeloupe",
+              "Adresse électronique : {courriel}",
+              "Numéro SIREN : 109 247 841, inscrit au Registre national des entreprises",
+              "Site : [studiomathysbocage.fr](https://studiomathysbocage.fr)"
+            ],
+            "Directeur de la publication : Mathys Bocage."
+          ]
+        },
+        {
+          "titre": "Hébergement",
+          "corps": [
+            "Le site est hébergé par Netlify, Inc., 44 Montgomery Street, Suite 300, San Francisco, CA 94104, États-Unis.",
+            "Site : [www.netlify.com](https://www.netlify.com) — Contact : [privacy@netlify.com](mailto:privacy@netlify.com)"
+          ]
+        },
+        {
+          "titre": "Le numéro affiché",
+          "corps": [
+            "Le numéro de téléphone et le compte WhatsApp indiqués sur ce site sont ceux de Studio Mathys, éditeur de la démonstration. Un message envoyé depuis ce site arrive donc chez l’auteur du site, et le message pré-rempli le rappelle."
+          ]
+        },
+        {
+          "titre": "Propriété intellectuelle",
+          "corps": [
+            "L’ensemble des éléments composant ce site — textes, éléments graphiques, code source, structure et charte visuelle — est protégé par le droit de la propriété intellectuelle.",
+            "Les photographies proviennent de banques d’images et sont utilisées conformément aux licences dont elles relèvent. Leurs auteurs sont relevés dans le fichier CREDITS.md du dépôt."
+          ]
+        },
+        {
+          "titre": "Données personnelles",
+          "corps": [
+            "Les formulaires de ce site **n’envoient rien et ne conservent rien**. Les informations saisies servent uniquement à composer le récapitulatif affiché à l’écran, puis elles sont oubliées.",
+            "Un message envoyé par WhatsApp ou par téléphone relève, lui, d’un échange réel avec Studio Mathys : il sert à répondre à votre demande, et rien d’autre.",
+            "Conformément au Règlement (UE) 2016/679 et à la loi n° 78-17 du 6 janvier 1978 modifiée, vous disposez d’un droit d’accès, de rectification, d’effacement, de limitation, d’opposition et de portabilité de vos données. Ces droits s’exercent par courrier électronique à {courriel}.",
+            "Vous pouvez introduire une réclamation auprès de la CNIL ([www.cnil.fr](https://www.cnil.fr))."
+          ]
+        },
+        {
+          "titre": "Cookies",
+          "corps": [
+            "Ce site fonctionne avec les seuls cookies strictement nécessaires à son affichage, exemptés de consentement préalable. La mesure d’audience, la publicité et le suivi comportemental en sont absents."
+          ]
+        },
+        {
+          "titre": "Informations réglementaires citées",
+          "corps": [
+            "La règle d’inspection périodique citée dans la foire aux questions provient de la délibération du conseil régional de la Guadeloupe du 20 novembre 2020, publiée au Journal officiel. Elle est reproduite à titre d’information ; le texte officiel fait seul foi.",
+            "Aucune autre obligation légale n’est affirmée sur ce site."
+          ]
+        },
+        {
+          "titre": "Droit applicable",
+          "corps": [
+            "Les présentes mentions légales sont régies par le droit français."
+          ]
+        }
+      ]
+    },
+    "confidentialite": {
+      "titre": "Politique de confidentialité",
+      "maj": "Dernière mise à jour : 27 septembre 2026",
+      "description": "Ce que ce site de démonstration recueille, et ce qu’il en fait.",
+      "sections": [
+        {
+          "titre": "Données recueillies",
+          "corps": [
+            "Ce site est une démonstration : ses formulaires vérifient ce que vous saisissez, vous montrent le récapitulatif, et s’arrêtent là. Rien n’est transmis, rien n’est enregistré, et les photographies que vous joignez sont comptées puis oubliées."
+          ]
+        },
+        {
+          "titre": "Ce qui sort du site",
+          "corps": [
+            "Seuls les boutons WhatsApp et téléphone ouvrent une conversation réelle, avec Studio Mathys. Ce que vous y écrivez sert à vous répondre, et se conserve trois ans à compter du dernier échange."
+          ]
+        },
+        {
+          "titre": "Vos droits",
+          "corps": [
+            "Vous pouvez demander l’accès, la rectification ou l’effacement de vos données à {courriel}."
+          ]
+        }
+      ]
+    }
+  }
+}

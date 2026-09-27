@@ -1,0 +1,64 @@
+---
+/**
+ * LA MARQUE.
+ *
+ * Un souffle et un nom. Les trois ondes descendent de gauche à droite : c'est
+ * l'air qui sort d'une bouche de soufflage, dessiné assez simplement pour
+ * rester lisible à 24 px de haut dans une barre.
+ *
+ * LE DESSIN EST EN LIGNE, et non servi comme fichier : il tient en trois
+ * courbes, il hérite de la couleur du texte, et il évite une requête de plus
+ * avant le premier rendu. Ses dimensions sont déclarées, donc la place est
+ * réservée et rien ne se décale.
+ */
+interface Props {
+  /** Dans le pied de page, la marque est posée, pas cliquable. */
+  statique?: boolean;
+}
+const { statique = false } = Astro.props;
+const Balise = statique ? 'span' : 'a';
+---
+
+<Balise class="marque" {...statique ? {} : { href: '/' }}>
+  <svg
+    class="marque__souffle"
+    width="34"
+    height="26"
+    viewBox="0 0 34 26"
+    fill="none"
+    aria-hidden="true"
+  >
+    <path d="M2 6c5-4 9 4 14 0s9-4 14 0" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" />
+    <path d="M2 13c5-4 9 4 14 0s9-4 14 0" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" opacity="0.62" />
+    <path d="M2 20c5-4 9 4 14 0s9-4 14 0" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" opacity="0.32" />
+  </svg>
+  <span class="marque__nom">Fré Lakaz</span>
+</Balise>
+
+<style>
+  .marque {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: inherit;
+    text-decoration: none;
+    /* Le nom ne se coupe jamais : c'est une marque, pas une phrase. */
+    white-space: nowrap;
+  }
+
+  .marque__souffle {
+    flex: none;
+    color: var(--givre);
+  }
+
+  .marque__nom {
+    font-size: 1.1875rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  :global(.section--sombre) .marque__souffle,
+  :global(.pied--sombre) .marque__souffle {
+    color: var(--givre-clair);
+  }
+</style>

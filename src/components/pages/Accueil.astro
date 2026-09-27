@@ -1,0 +1,838 @@
+---
+/**
+ * L'ACCUEIL.
+ *
+ * L'ordre suit ce qu'on cherche quand on arrive : d'abord les trois actions,
+ * ensuite ce que je fais et ce que ça coûte, puis où j'interviens, puis la
+ * preuve, puis les questions.
+ *
+ * LE PREMIER ÉCRAN PORTE LES TROIS ACTIONS. Un site d'artisan n'a pas à se
+ * présenter avant de servir : quelqu'un dont la clim a lâché doit pouvoir
+ * écrire sans faire défiler quoi que ce soit.
+ */
+import { getImage } from 'astro:assets';
+import contenu from '../../data/contenu.json';
+import { imagesOuverture } from '../../lib/ouverture';
+import facade from '../../assets/photos/facade-trois-groupes.jpg';
+import toiture from '../../assets/photos/toiture-commerciale.jpg';
+import avant from '../../assets/photos/avant-entretien.jpg';
+
+const s = contenu.site;
+const euro = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+
+/* La photographie d'ouverture décide du temps de premier affichage. Elle est
+   calculée dans src/lib/ouverture.ts, que la PAGE lit aussi pour la
+   précharger : les deux demandent ainsi exactement les mêmes largeurs. */
+const { avif: heroAvif, webp: heroWebp, repli: heroRepli, sizes: SIZES_HERO } = await imagesOuverture();
+
+/* Les cartes : 560 px de large au plus grand, mesuré sur la maquette. */
+const SOURCES = { 'facade-trois-groupes': facade, 'toiture-commerciale': toiture, 'avant-entretien': avant };
+const LARGEURS_CARTE = [360, 560, 720, 1120];
+const SIZES_CARTE = '(min-width: 62rem) 360px, (min-width: 44rem) 45vw, calc(100vw - 2.5rem)';
+const cartes = await Promise.all(
+  contenu.realisations.items.map(async (item) => {
+    const src = SOURCES[item.id as keyof typeof SOURCES];
+    if (!src) throw new Error(`Photographie manquante pour « ${item.id} » — lancez « npm run photos ».`);
+    return {
+      item,
+      avif: await getImage({ src, widths: LARGEURS_CARTE, format: 'avif', quality: 58 }),
+      webp: await getImage({ src, widths: LARGEURS_CARTE, format: 'webp', quality: 70 }),
+      repli: await getImage({ src, width: 720, format: 'webp', quality: 70 }),
+    };
+  }),
+);
+
+---
+
+{/* ─── Ouverture ─────────────────────────────────────────────────────── */}
+<section class="section section--premiere ouverture" aria-labelledby="ouverture-titre">
+  <div class="enveloppe ouverture__grille">
+    <div class="ouverture__mots">
+      <p class="ouverture__kicker chiffre">
+        {s.kickerGauche} <span aria-hidden="true">·</span> {s.commune}
+      </p>
+
+      <h1 class="ouverture__titre" id="ouverture-titre">
+        <span>{s.accroche1}</span>
+        <span>{s.accroche2}</span>
+        <em>{s.accroche3}</em>
+      </h1>
+
+      <p class="ouverture__lead">{s.sousTitre}</p>
+
+      <div class="ouverture__actions" data-actions-ouverture>
+        <a class="bouton bouton--urgence" href={contenu.contact.whatsappLien} target="_blank" rel="noopener">
+          {contenu.depannage.action}
+          <span class="visuellement-cache">{contenu.ui.nouvelOnglet}</span>
+        </a>
+        <a class="bouton bouton--principal" href="/devis/">{contenu.devis.titre}</a>
+        <a class="bouton bouton--second" href="/rendez-vous/">{contenu.rendezvous.titre}</a>
+      </div>
+
+      <dl class="reperes">
+        {
+          s.reperes.map((r) => (
+            <div class="repere">
+              <dt class="repere__cle">{r.cle}</dt>
+              <dd class="repere__valeur chiffre">{r.valeur}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <figure class="ouverture__image">
+      <picture>
+        <source type="image/avif" srcset={heroAvif.srcSet.attribute} sizes={SIZES_HERO} />
+        <source type="image/webp" srcset={heroWebp.srcSet.attribute} sizes={SIZES_HERO} />
+        <img
+          src={heroRepli.src}
+          width={2400}
+          height={1350}
+          alt={s.altOuverture}
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
+    </figure>
+  </div>
+</section>
+
+{/* ─── Prestations ───────────────────────────────────────────────────── */}
+<section class="section" id="prestations" aria-labelledby="prestations-titre">
+  <div class="enveloppe">
+    <div class="bande">
+      <p class="rail" id="prestations-titre">{contenu.prestations.rail}</p>
+      <h2 class="accroche">{contenu.prestations.accroche}</h2>
+      <p class="chapeau">{contenu.prestations.intro}</p>
+    </div>
+
+    <ul class="serie metiers">
+      {
+        contenu.prestations.items.map((m) => (
+          <li class="metier">
+            <p class="metier__nom">{m.nom}</p>
+            <p class="metier__prix">
+              {m.prix ? (
+                <>
+                  <span class="metier__mention">{m.prixMention}</span>
+                  <span class="metier__montant chiffre">{euro.format(m.prix)}</span>
+                </>
+              ) : (
+                <span class="metier__mention metier__mention--seule">{m.prixMention}</span>
+              )}
+            </p>
+            <p class="metier__resume">{m.resume}</p>
+            <ul class="metier__lignes">
+              {m.lignes.map((l) => <li>{l}</li>)}
+            </ul>
+            <p class="metier__action">
+              {
+                m.actionLien === 'whatsapp' ? (
+                  <a class="lien-fort" href={contenu.contact.whatsappLien} target="_blank" rel="noopener">
+                    {m.action}
+                    <span aria-hidden="true">↗</span>
+                    <span class="visuellement-cache">{contenu.ui.nouvelOnglet}</span>
+                  </a>
+                ) : (
+                  <a class="lien-fort" href={m.actionLien}>
+                    {m.action}
+                    <span aria-hidden="true">→</span>
+                  </a>
+                )
+              }
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+
+    {/* Les trois lignes de prix de l'entretien, en dessous : c'est la seule
+        prestation dont le contenu est constant, donc la seule chiffrable. */}
+    <div class="tarifs">
+      <p class="tarifs__intitule chiffre">{contenu.prestations.items[1].nom}</p>
+      <dl class="tarifs__liste">
+        {
+          contenu.prestations.items[1].tarifs.map((t) => (
+            <div class="tarif">
+              <dt class="tarif__nom">
+                {t.nom}
+                <span class="tarif__detail">{t.detail}</span>
+              </dt>
+              <dd class="tarif__prix chiffre">
+                <span class="tarif__depuis">{contenu.ui.aPartirDe}</span>
+                {euro.format(t.prix)}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>
+
+{/* ─── Dépannage ─────────────────────────────────────────────────────── */}
+<section class="section section--sombre" id="depannage" aria-labelledby="depannage-titre">
+  <div class="enveloppe">
+    <div class="bande">
+      <p class="rail" id="depannage-titre">{contenu.depannage.rail}</p>
+      <div class="corps urgence">
+        <h2 class="accroche urgence__titre">{contenu.depannage.accroche}</h2>
+        <p class="urgence__texte">{contenu.depannage.texte}</p>
+        <div class="urgence__actions">
+          <a class="bouton bouton--urgence" href={contenu.contact.whatsappLien} target="_blank" rel="noopener">
+            {contenu.depannage.action}
+            <span class="visuellement-cache">{contenu.ui.nouvelOnglet}</span>
+          </a>
+          <a class="bouton bouton--second" href={contenu.contact.telephoneLien}>
+            {contenu.depannage.actionSecondaire} <span class="chiffre">{contenu.contact.telephone}</span>
+          </a>
+        </div>
+        <p class="urgence__horaires chiffre">{contenu.depannage.horaires}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{/* ─── Zone d'intervention ───────────────────────────────────────────── */}
+<section class="section" id="zone" aria-labelledby="zone-titre">
+  <div class="enveloppe">
+    <div class="bande">
+      <p class="rail" id="zone-titre">{contenu.zone.rail}</p>
+      <h2 class="accroche">{contenu.zone.accroche}</h2>
+      <p class="chapeau">{contenu.zone.intro}</p>
+    </div>
+
+    <ul class="serie zones">
+      {
+        contenu.zone.groupes.map((g) => (
+          <li class="zone">
+            <p class="zone__delai chiffre">{g.delai}</p>
+            <p class="zone__nom">{g.nom}</p>
+            <p class="zone__communes">{g.communes.join(' · ')}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="note zone__note">{contenu.zone.note}</p>
+  </div>
+</section>
+
+{/* ─── Sur le terrain ────────────────────────────────────────────────── */}
+<section class="section" id="chantiers" aria-labelledby="chantiers-titre">
+  <div class="enveloppe">
+    <div class="bande">
+      <p class="rail" id="chantiers-titre">{contenu.realisations.rail}</p>
+      <h2 class="accroche">{contenu.realisations.accroche}</h2>
+      <p class="chapeau">{contenu.realisations.intro}</p>
+    </div>
+
+    {/* Lue AVANT les images : qui remarque que trois photographies ne se
+        ressemblent pas doit déjà savoir pourquoi. */}
+    <p class="mention">{contenu.realisations.mention}</p>
+
+    <ul class="serie chantiers">
+      {
+        cartes.map(({ item, avif, webp, repli }) => (
+          <li class="chantier">
+            <figure class="chantier__cadre">
+              <picture>
+                <source type="image/avif" srcset={avif.srcSet.attribute} sizes={SIZES_CARTE} />
+                <source type="image/webp" srcset={webp.srcSet.attribute} sizes={SIZES_CARTE} />
+                <img
+                  src={repli.src}
+                  width={1600}
+                  height={1200}
+                  alt={`${contenu.ui.altChantier} ${item.nom}, ${item.lieu}`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </figure>
+            <p class="chantier__entete">
+              <span class="chantier__nom">{item.nom}</span>
+              <span class="chantier__lieu chiffre">{item.lieu}</span>
+            </p>
+            <p class="chantier__texte">{item.texte}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+{/* ─── Avis ──────────────────────────────────────────────────────────── */}
+<section class="section" id="avis" aria-labelledby="avis-titre">
+  <div class="enveloppe">
+    <div class="bande">
+      <p class="rail" id="avis-titre">{contenu.avis.rail}</p>
+      <h2 class="accroche">{contenu.avis.accroche}</h2>
+      <p class="chapeau">{contenu.avis.mention}</p>
+    </div>
+
+    <ul class="serie avis">
+      {
+        contenu.avis.items.map((a) => (
+          <li class="avis__carte">
+            <blockquote class="avis__texte">{a.texte}</blockquote>
+            <p class="avis__signature chiffre">
+              {a.nom} <span aria-hidden="true">·</span> {a.lieu}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+{/* ─── Questions ─────────────────────────────────────────────────────── */}
+<section class="section" id="questions" aria-labelledby="questions-titre">
+  <div class="enveloppe">
+    <div class="bande">
+      <p class="rail" id="questions-titre">{contenu.questions.rail}</p>
+      <h2 class="accroche">{contenu.questions.accroche}</h2>
+    </div>
+
+    <div class="serie reponses">
+      {
+        contenu.questions.items.map((q, i) => (
+          <details class="q" open={i === 0}>
+            <summary class="q__titre">{q.q}</summary>
+            <div class="q__panneau">
+              <p class="q__texte">{q.r}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+
+    <p class="note reponses__source">
+      {contenu.reglementation.source} —{' '}
+      <a class="lien-sobre" href={contenu.reglementation.sourceLien} target="_blank" rel="noopener">
+        {contenu.reglementation.sourceLibelle}
+        <span aria-hidden="true">↗</span>
+        <span class="visuellement-cache">{contenu.ui.nouvelOnglet}</span>
+      </a>
+    </p>
+  </div>
+</section>
+
+<style>
+  /* ─── Ouverture ─────────────────────────────────────────────────────── */
+  .ouverture__grille {
+    display: grid;
+    gap: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+  }
+
+  @media (min-width: 60rem) {
+    .ouverture__grille {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+      align-items: center;
+    }
+  }
+
+  .ouverture__kicker {
+    font-size: var(--t-kicker);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--givre);
+    overflow-wrap: anywhere;
+  }
+
+  .ouverture__titre {
+    margin-top: clamp(1rem, 0.7rem + 1.4vw, 1.75rem);
+    font-size: var(--t-mega);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    max-width: 13ch;
+  }
+
+  .ouverture__titre span,
+  .ouverture__titre em {
+    display: block;
+  }
+
+  .ouverture__titre em {
+    font-style: normal;
+    color: var(--givre);
+  }
+
+  .ouverture__lead {
+    margin-top: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+    max-width: 46ch;
+    color: var(--encre-2);
+  }
+
+  .ouverture__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+  }
+
+  .reperes {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.9rem;
+    margin-top: clamp(2rem, 1.6rem + 1.8vw, 3rem);
+    font-size: var(--t-petit);
+    max-width: 30rem;
+  }
+
+  .repere {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.2rem 1rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--trait);
+  }
+
+  .repere:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .repere__cle {
+    color: var(--encre-3);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .repere__valeur {
+    font-weight: 500;
+    color: var(--encre);
+    text-align: right;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .ouverture__image {
+    margin: 0;
+    border-radius: var(--rayon);
+    overflow: hidden;
+    background: var(--surface-2);
+  }
+
+  .ouverture__image img {
+    display: block;
+    width: 100%;
+    /* Le rapport est déclaré : la place est RÉSERVÉE avant que l'image
+       arrive, donc rien ne se décale au chargement. */
+    aspect-ratio: 16 / 11;
+    object-fit: cover;
+  }
+
+  /* ─── Prestations ───────────────────────────────────────────────────── */
+  .metiers {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1px;
+    margin-top: clamp(2.5rem, 1.9rem + 2.6vw, 4rem);
+    background: var(--trait);
+    border-block: 1px solid var(--trait);
+  }
+
+  @media (min-width: 52rem) {
+    .metiers {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .metier {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: clamp(1.35rem, 1.1rem + 1.2vw, 2rem);
+    background: var(--fond);
+  }
+
+  .metier__nom {
+    font-size: var(--t-sous);
+    font-weight: 600;
+    line-height: 1.15;
+  }
+
+  .metier__prix {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem;
+  }
+
+  .metier__mention {
+    font-size: var(--t-kicker);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--encre-3);
+    overflow-wrap: anywhere;
+  }
+
+  .metier__mention--seule {
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: var(--t-petit);
+    color: var(--givre);
+  }
+
+  .metier__montant {
+    font-size: var(--t-chiffre);
+    font-weight: 500;
+    line-height: 1;
+    color: var(--encre);
+  }
+
+  .metier__resume {
+    font-size: var(--t-petit);
+    color: var(--encre-2);
+  }
+
+  .metier__lignes {
+    display: grid;
+    gap: 0.45rem;
+    font-size: var(--t-petit);
+    color: var(--encre-2);
+  }
+
+  .metier__lignes li {
+    display: flex;
+    gap: 0.6rem;
+  }
+
+  .metier__lignes li::before {
+    content: '';
+    flex: none;
+    width: 0.45rem;
+    height: 1px;
+    margin-top: 0.85em;
+    background: var(--givre);
+  }
+
+  .metier__action {
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+
+  .lien-fort {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.75rem;
+    font-size: var(--t-petit);
+    font-weight: 600;
+    color: var(--givre);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .lien-fort:hover {
+    border-bottom-color: var(--givre);
+  }
+
+  .tarifs {
+    margin-top: clamp(2rem, 1.6rem + 1.8vw, 3rem);
+  }
+
+  .tarifs__intitule {
+    font-size: var(--t-kicker);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--givre);
+    overflow-wrap: anywhere;
+  }
+
+  .tarifs__liste {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    margin-top: 0.75rem;
+    max-width: 44rem;
+  }
+
+  .tarif {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.35rem 1.5rem;
+    padding-block: 0.9rem;
+    border-bottom: 1px solid var(--trait);
+  }
+
+  .tarif__nom {
+    display: grid;
+    gap: 0.15rem;
+    font-weight: 600;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .tarif__detail {
+    font-size: var(--t-kicker);
+    font-weight: 400;
+    color: var(--encre-3);
+  }
+
+  .tarif__prix {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    font-size: 1.375rem;
+    font-weight: 500;
+  }
+
+  .tarif__depuis {
+    font-family: var(--texte);
+    font-size: var(--t-kicker);
+    font-weight: 400;
+    color: var(--encre-3);
+  }
+
+  /* ─── Dépannage ─────────────────────────────────────────────────────── */
+  .urgence__titre {
+    flex: none;
+    max-width: 16ch;
+  }
+
+  .urgence__texte {
+    margin-top: 1.25rem;
+    max-width: 52ch;
+    color: var(--givre-pale);
+  }
+
+  .urgence__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1.75rem;
+  }
+
+  .section--sombre .bouton--second {
+    background: transparent;
+    border-color: rgb(255 255 255 / 0.45);
+    color: var(--encre-claire);
+  }
+
+  .section--sombre .bouton--second:hover {
+    border-color: var(--encre-claire);
+  }
+
+  .urgence__horaires {
+    margin-top: 1.25rem;
+    font-size: var(--t-kicker);
+    color: var(--givre-pale);
+  }
+
+  /* ─── Zone ──────────────────────────────────────────────────────────── */
+  .zones {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+    gap: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+    margin-top: clamp(2.5rem, 1.9rem + 2.6vw, 4rem);
+  }
+
+  .zone {
+    display: grid;
+    gap: 0.4rem;
+    align-content: start;
+    padding-top: 1rem;
+    border-top: 2px solid var(--givre);
+  }
+
+  .zone__delai {
+    font-size: var(--t-kicker);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--givre);
+    overflow-wrap: anywhere;
+  }
+
+  .zone__nom {
+    font-size: 1.125rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .zone__communes {
+    font-size: var(--t-petit);
+    line-height: 1.7;
+    color: var(--encre-2);
+  }
+
+  .zone__note {
+    margin-top: clamp(1.75rem, 1.4rem + 1.4vw, 2.5rem);
+  }
+
+  /* ─── Chantiers ─────────────────────────────────────────────────────── */
+  .mention {
+    margin-top: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+    max-width: 76ch;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    color: var(--encre-3);
+  }
+
+  .chantiers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
+    gap: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+    margin-top: clamp(2rem, 1.6rem + 1.8vw, 3rem);
+  }
+
+  .chantier {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .chantier__cadre {
+    margin: 0;
+    border-radius: var(--rayon);
+    overflow: hidden;
+    background: var(--surface-2);
+  }
+
+  .chantier__cadre img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .chantier__entete {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--trait);
+  }
+
+  .chantier__nom {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .chantier__lieu {
+    font-size: var(--t-kicker);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--encre-3);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .chantier__texte {
+    font-size: var(--t-petit);
+    line-height: 1.7;
+    color: var(--encre-2);
+  }
+
+  /* ─── Avis ──────────────────────────────────────────────────────────── */
+  .avis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
+    gap: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+    margin-top: clamp(2.5rem, 1.9rem + 2.6vw, 4rem);
+  }
+
+  .avis__carte {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    background: var(--surface);
+    border: 1px solid var(--trait);
+    border-radius: var(--rayon);
+  }
+
+  .avis__texte {
+    margin: 0;
+    font-size: var(--t-petit);
+    line-height: 1.7;
+    color: var(--encre-2);
+  }
+
+  .avis__signature {
+    margin-top: auto;
+    font-size: var(--t-kicker);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--encre-3);
+    overflow-wrap: anywhere;
+  }
+
+  /* ─── Questions ─────────────────────────────────────────────────────── */
+  .reponses {
+    margin-top: clamp(2.5rem, 1.9rem + 2.6vw, 4rem);
+    max-width: 52rem;
+  }
+
+  .q {
+    border-bottom: 1px solid var(--trait);
+  }
+
+  .q__titre {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3.5rem;
+    padding-block: 0.75rem;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .q__titre::-webkit-details-marker {
+    display: none;
+  }
+
+  .q__titre::after {
+    content: '+';
+    margin-left: auto;
+    font-family: var(--chiffre);
+    font-size: 1.25rem;
+    color: var(--givre);
+  }
+
+  .q[open] .q__titre::after {
+    content: '−';
+  }
+
+  /* REPLIÉE, LA RÉPONSE NE DOIT PLUS RIEN OCCUPER. Une boîte en « grid »
+     laissée en place continue de réserver sa hauteur dans certains moteurs,
+     et le texte déborde au zoom. */
+  .q:not([open]) .q__panneau {
+    display: none;
+  }
+
+  .q__panneau {
+    padding-bottom: 1.25rem;
+  }
+
+  .q__texte {
+    max-width: 68ch;
+    font-size: var(--t-petit);
+    line-height: 1.75;
+    color: var(--encre-2);
+  }
+
+  .reponses__source {
+    margin-top: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+  }
+
+  .lien-sobre {
+    color: var(--givre);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+</style>

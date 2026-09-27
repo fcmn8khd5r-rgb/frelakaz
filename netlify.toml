@@ -1,0 +1,45 @@
+# Fré Lakaz — configuration de déploiement
+#
+# Ce fichier prime sur ce qui est saisi dans le tableau de bord Netlify. Un
+# réglage qui ne vit que dans une interface ne se relit pas, ne se compare pas
+# d'une version à l'autre, et disparaît le jour où le site est recréé.
+
+[build]
+  command  = "npm run build"
+  publish  = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Le site appelle /api/creneaux, /api/rendez-vous et /api/devis. Les fonctions
+# Netlify ne répondent qu'à /.netlify/functions/<nom> : sans cette redirection,
+# les créneaux restent vides et les deux envois échouent UNE FOIS EN LIGNE,
+# alors que tout fonctionne en local où le serveur de développement fait la
+# correspondance.
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Les fichiers engendrés par Astro portent une empreinte de contenu dans leur
+# nom : leur adresse change quand leur contenu change, on peut donc les garder
+# un an. Les pages, elles, sont revalidées à chaque visite — sans quoi une
+# correction attendrait le bon vouloir du cache.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/polices/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"

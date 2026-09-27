@@ -1,0 +1,10 @@
+---
+import Base from '../layouts/Base.astro';
+import Document from '../components/pages/Document.astro';
+import contenu from '../data/contenu.json';
+const doc = contenu.legal.confidentialite;
+---
+
+<Base titre={`${doc.titre} — ${contenu.site.nom}`} description={doc.description}>
+  <Document cle="confidentialite" />
+</Base>

@@ -1,0 +1,71 @@
+---
+/**
+ * LE BANDEAU DE DÉMONSTRATION.
+ *
+ * En tête de CHAQUE page, avant la barre de navigation, et jamais masqué au
+ * défilement de la page — il part avec elle, mais il est lu en premier.
+ *
+ * Il nomme les deux choses qu'il faut distinguer : l'entreprise imaginaire et
+ * l'auteur réel du site. Un visiteur ne doit jamais croire qu'il a affaire à
+ * un vrai artisan, ni un artisan croire que je montre le site d'un concurrent.
+ *
+ * Contraste mesuré : blanc sur ardoise, 16,2:1.
+ */
+import contenu from '../data/contenu.json';
+---
+
+<aside class="bandeau">
+  <div class="bandeau__interieur">
+    <span class="bandeau__texte">{contenu.demo.texte}</span>
+    <a class="bandeau__lien" href={contenu.demo.auteurLien} target="_blank" rel="noopener">
+      {contenu.demo.auteurLibelle}
+      <span aria-hidden="true">↗</span>
+      <span class="visuellement-cache">{contenu.ui.nouvelOnglet}</span>
+    </a>
+  </div>
+</aside>
+
+<style>
+  .bandeau {
+    background: var(--ardoise);
+    color: var(--encre-claire);
+    /* L'encoche de l'iPhone en paysage : le bandeau garde son fond jusqu'aux
+       bords, seul son contenu se retire. */
+    padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+  }
+
+  .bandeau__interieur {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25rem 1rem;
+    max-width: var(--largeur);
+    margin-inline: auto;
+    padding: 0.55rem var(--marge);
+    font-size: var(--t-kicker);
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .bandeau__texte {
+    /* À 200 % de taille de texte, une phrase de cette longueur doit pouvoir se
+       replier plutôt que pousser la barre hors de l'écran. */
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .bandeau__lien {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--givre-clair);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    white-space: nowrap;
+  }
+
+  .bandeau__lien:hover {
+    color: var(--encre-claire);
+  }
+</style>

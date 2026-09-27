@@ -1,0 +1,152 @@
+---
+/**
+ * LE PIED DE PAGE.
+ *
+ * Il reprend les sections, les deux pages d'action, les moyens de contact et
+ * les documents : un visiteur arrivé en bas n'a jamais à remonter pour savoir
+ * où aller.
+ *
+ * Il redit ce qu'est ce site. Le bandeau du haut est lu en arrivant ; celui
+ * qui descend jusqu'ici a pu l'oublier, et il ne doit pas repartir en croyant
+ * avoir trouvé un artisan.
+ */
+import contenu from '../data/contenu.json';
+import Marque from './Marque.astro';
+
+const { sections, pages, documents } = contenu.navigation;
+const annee = new Date().getFullYear();
+---
+
+<footer class="pied pied--sombre">
+  <div class="enveloppe">
+    <div class="pied__haut">
+      <div class="pied__marque">
+        <Marque statique />
+        <p class="pied__metier">{contenu.site.metier}</p>
+        <p class="pied__horaires chiffre">{contenu.contact.horaires}</p>
+      </div>
+
+      <nav class="pied__col" aria-label={contenu.ui.navPrincipale}>
+        <p class="pied__intitule">{contenu.site.nom}</p>
+        {[...pages, ...sections].map((s) => <a class="pied__lien" href={s.href}>{s.label}</a>)}
+      </nav>
+
+      <div class="pied__col">
+        <p class="pied__intitule">Contact</p>
+        <a class="pied__lien chiffre" href={contenu.contact.telephoneLien}>
+          {contenu.contact.telephone}
+        </a>
+        <a
+          class="pied__lien"
+          href={contenu.contact.whatsappLien}
+          target="_blank"
+          rel="noopener"
+        >
+          {contenu.ui.whatsapp}
+          <span class="visuellement-cache">{contenu.ui.nouvelOnglet}</span>
+        </a>
+        <p class="pied__delai">{contenu.contact.delaiReponse}</p>
+      </div>
+
+      <nav class="pied__col" aria-label={contenu.ui.navDocuments}>
+        <p class="pied__intitule">{contenu.ui.navDocuments}</p>
+        {documents.map((d) => <a class="pied__lien" href={d.href}>{d.label}</a>)}
+      </nav>
+    </div>
+
+    <p class="pied__demo">
+      {contenu.demo.texte}. <a href={contenu.demo.auteurLien} target="_blank" rel="noopener">
+        {contenu.demo.auteurLibelle}<span class="visuellement-cache">
+          {contenu.ui.nouvelOnglet}</span></a>.
+    </p>
+
+    <p class="pied__bas">© {annee} {contenu.site.nom}</p>
+  </div>
+</footer>
+
+<style>
+  .pied {
+    background: var(--ardoise);
+    color: var(--encre-claire);
+    padding-block: clamp(2.5rem, 1.8rem + 3vw, 4rem) 1.75rem;
+  }
+
+  .pied__haut {
+    display: grid;
+    /* Une grille qui se remplit d'elle-même : une colonne sur téléphone,
+       jusqu'à quatre sur grand écran, sans point de rupture à choisir. */
+    grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+    gap: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+  }
+
+  .pied__marque {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+  }
+
+  .pied__metier,
+  .pied__horaires,
+  .pied__delai {
+    font-size: var(--t-petit);
+    line-height: 1.6;
+    color: var(--givre-pale);
+    max-width: 30ch;
+  }
+
+  .pied__col {
+    display: grid;
+    align-content: start;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pied__intitule {
+    font-family: var(--chiffre);
+    font-size: var(--t-kicker);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--givre-clair);
+    margin-bottom: 0.4rem;
+    overflow-wrap: anywhere;
+  }
+
+  .pied__lien {
+    display: flex;
+    align-items: center;
+    min-height: 2.5rem;
+    font-size: var(--t-petit);
+    color: var(--encre-claire);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .pied__lien:hover {
+    color: var(--givre-clair);
+  }
+
+  .pied__delai {
+    margin-top: 0.5rem;
+  }
+
+  .pied__demo {
+    margin-top: clamp(2rem, 1.6rem + 1.8vw, 3rem);
+    padding-top: 1.25rem;
+    border-top: 1px solid rgb(255 255 255 / 0.18);
+    font-size: var(--t-petit);
+    line-height: 1.6;
+    color: var(--givre-pale);
+    max-width: 72ch;
+  }
+
+  .pied__demo a {
+    color: var(--givre-clair);
+    text-underline-offset: 0.2em;
+  }
+
+  .pied__bas {
+    margin-top: 1rem;
+    font-size: var(--t-kicker);
+    color: var(--givre-pale);
+  }
+</style>

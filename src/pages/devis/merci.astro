@@ -1,0 +1,15 @@
+---
+/** Servie par la redirection de /api/devis. Hors index : elle ne vaut que
+ *  pour celui qui vient d'envoyer. */
+import Base from '../../layouts/Base.astro';
+import Merci from '../../components/pages/Merci.astro';
+import contenu from '../../data/contenu.json';
+---
+
+<Base
+  titre={`${contenu.merci.devis.titre} — ${contenu.site.nom}`}
+  description={contenu.merci.devis.description}
+  noindex
+>
+  <Merci type="devis" />
+</Base>

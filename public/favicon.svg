@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Le souffle de la marque, sur l'ardoise du site. Trois ondes qui
+       descendent : l'air qui sort d'une bouche de soufflage. -->
+  <rect width="64" height="64" rx="12" fill="#14222a"/>
+  <g fill="none" stroke="#3d9bb8" stroke-width="5" stroke-linecap="round">
+    <path d="M14 22c5-4 9 4 14 0s9-4 14 0" opacity="1"/>
+    <path d="M14 32c5-4 9 4 14 0s9-4 14 0" opacity="0.66"/>
+    <path d="M14 42c5-4 9 4 14 0s9-4 14 0" opacity="0.36"/>
+  </g>
+</svg>

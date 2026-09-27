@@ -1,0 +1,207 @@
+---
+/**
+ * LE GABARIT COMMUN.
+ *
+ * Les balises de tête sont dans le <head> RÉEL : les robots et les aperçus de
+ * partage lisent le document servi, ils n'exécutent aucun script.
+ *
+ * AUCUNE DONNÉE STRUCTURÉE, ET C'EST DÉLIBÉRÉ. Déclarer un « LocalBusiness »
+ * pour Fré Lakaz reviendrait à demander aux moteurs d'inscrire une entreprise
+ * imaginaire dans leurs fiches, avec une adresse et un numéro — un artisan
+ * inexistant pourrait alors remonter dans une recherche locale, devant de
+ * vrais confrères. Le bandeau dit ce qu'est ce site ; le balisage n'a pas à
+ * dire le contraire.
+ *
+ * L'adresse canonique et og:url sont ABSOLUES et dérivées de l'adresse du site
+ * — celle que déclare le contenu. Un chemin relatif dans og:image est refusé
+ * par Open Graph, et un partage sort alors sans vignette.
+ */
+import contenu from '../data/contenu.json';
+import Bandeau from '../components/Bandeau.astro';
+import Entete from '../components/Entete.astro';
+import BarreBasse from '../components/BarreBasse.astro';
+import Pied from '../components/Pied.astro';
+import '../styles/global.css';
+
+interface Props {
+  titre: string;
+  description: string;
+  /** Une page qui n'a pas à être indexée : la 404, les confirmations. */
+  noindex?: boolean;
+  /** L'image du premier écran, à précharger : c'est elle qui décide du LCP. */
+  precharge?: { srcset: string; sizes: string; type: string }[];
+}
+const { titre, description, noindex = false, precharge = [] } = Astro.props;
+
+const site = new URL(Astro.site!);
+const canonique = new URL(Astro.url.pathname, site).href;
+const partage = new URL('/partage.jpg', site).href;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <!-- « viewport-fit=cover » : la page occupe l'écran de l'iPhone jusqu'aux
+         bords. Les retraits sûrs sont rendus au contenu par
+         « env(safe-area-inset-*) », dans la feuille de style. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#14222a" />
+
+    <title>{titre}</title>
+    <meta name="description" content={description} />
+    {
+      noindex ? (
+        <meta name="robots" content="noindex, follow" />
+      ) : (
+        <>
+          <link rel="canonical" href={canonique} />
+          <meta name="robots" content="index, follow, max-image-preview:large" />
+        </>
+      )
+    }
+
+    <!-- Les polices sont sur le même hôte : on les demande dès la tête du
+         document, sans attendre que la feuille de style soit analysée. Les
+         deux graisses du texte sont présentes DÈS le premier écran ; le
+         monospace y est aussi, puisqu'il porte les trois repères. -->
+    <link rel="preload" href="/polices/plex-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/polices/plex-600.woff2" as="font" type="font/woff2" crossorigin />
+    <link
+      rel="preload"
+      href="/polices/plex-mono-500.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    {
+      precharge.map((p) => (
+        <link
+          rel="preload"
+          as="image"
+          imagesrcset={p.srcset}
+          imagesizes={p.sizes}
+          type={p.type}
+          fetchpriority="high"
+        />
+      ))
+    }
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content={contenu.site.nom} />
+    <meta property="og:title" content={titre} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonique} />
+    <meta property="og:image" content={partage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={contenu.demo.texte} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap.xml" />
+
+    <!-- Posée avant le premier rendu : les états de départ des animations ne
+         s'appliquent que si le script est là pour les lever. Sans elle, un
+         navigateur sans JavaScript afficherait une page immobile et décalée. -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+  </head>
+
+  <body>
+    <a class="saut" href="#contenu">{contenu.ui.sautContenu}</a>
+    <Bandeau />
+    <Entete />
+    <main id="contenu">
+      <slot />
+    </main>
+    <Pied />
+    <BarreBasse />
+
+    <script>
+      /**
+       * L'APPARITION AU DÉFILEMENT.
+       *
+       * Un observateur, pas un écouteur de défilement : le navigateur décide
+       * quand mesurer, la page ne calcule rien à chaque image. Seul
+       * « transform » bouge — aucune propriété qui redessine la mise en page,
+       * donc aucun décalage, et aucun état d'opacité intermédiaire où le
+       * texte deviendrait illisible.
+       *
+       * CE QUI PARAÎT. Chaque section est découpée en unités : la bande
+       * d'intitulé d'un tenant, puis les éléments d'une série l'un après
+       * l'autre. Ce qui est DÉJÀ à l'écran au chargement reste en place :
+       * rien ne clignote à l'arrivée, et le plus grand élément de la première
+       * vue est peint tout de suite.
+       *
+       * LES FILETS. Sans script, rien n'est marqué : la page est entière.
+       * Sans observateur, tout est révélé d'emblée. Au retour sur l'onglet,
+       * ce qui est à l'écran paraît sans attendre — un onglet en arrière-plan
+       * suspend le fil d'animation, et un bloc entré pendant ce temps
+       * resterait à sa valeur de départ.
+       */
+      const SERIES = '.serie';
+      const sobre = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const unites = (section: Element) => {
+        const enveloppe = section.querySelector(':scope > .enveloppe');
+        if (!enveloppe) return [];
+        const out: Element[] = [];
+        for (const bloc of enveloppe.children) {
+          if (bloc.matches(SERIES)) out.push(...bloc.children);
+          else out.push(bloc);
+        }
+        return out.filter(Boolean);
+      };
+
+      /* La première section garde son premier écran intact. */
+      const sections = [...document.querySelectorAll('main > section')].slice(1);
+      const bas = window.innerHeight;
+      const blocs = sections.flatMap(unites).filter((e) => e.getBoundingClientRect().top > bas);
+
+      blocs.forEach((b) => b.setAttribute('data-monte', ''));
+
+      if (!('IntersectionObserver' in window)) {
+        blocs.forEach((b) => b.classList.add('vu'));
+      } else {
+        const oeil = new IntersectionObserver(
+          (entrees) => {
+            const arrives = entrees
+              .filter((e) => e.isIntersecting)
+              /* Les entrées ne suivent pas l'ordre du document : on les remet
+                 de haut en bas, sans quoi la cascade descendrait à l'envers. */
+              .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+            arrives.forEach((e, i) => {
+              const el = e.target as HTMLElement;
+              /* Quatre crans au plus : au-delà, l'attente se verrait. */
+              if (!sobre && i) el.style.transitionDelay = `${Math.min(i, 4) * 60}ms`;
+              el.classList.add('vu');
+              oeil.unobserve(el);
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.04 },
+        );
+        blocs.forEach((b) => oeil.observe(b));
+
+        const rattraper = () => {
+          if (document.hidden) return;
+          for (const b of blocs) {
+            if (b.classList.contains('vu')) continue;
+            const r = b.getBoundingClientRect();
+            if (r.top < window.innerHeight && r.bottom > 0) {
+              b.classList.add('vu');
+              oeil.unobserve(b);
+            }
+          }
+        };
+        document.addEventListener('visibilitychange', rattraper);
+        window.addEventListener('pageshow', rattraper);
+      }
+    </script>
+  </body>
+</html>
