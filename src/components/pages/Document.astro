@@ -108,6 +108,7 @@ const enrichir = (texte: string) =>
     font-size: var(--t-petit);
     line-height: 1.75;
     color: var(--encre-2);
+    overflow-wrap: anywhere;
   }
 
   .doc__liste {
@@ -118,6 +119,12 @@ const enrichir = (texte: string) =>
   .doc__liste li {
     display: flex;
     gap: 0.7rem;
+    /* Un courriel ou un SIREN ne se coupe pas tout seul : à 200 % de taille
+       de texte, « contact@studiomathysbocage.fr » réclamait 514 px pour 390
+       disponibles. Seul « anywhere » entre dans le calcul de la largeur
+       minimale — « break-word » laisse la boîte déborder quand même. */
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .doc__liste li::before {

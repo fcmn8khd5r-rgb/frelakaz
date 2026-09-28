@@ -413,6 +413,151 @@ textarea {
   outline-offset: 2px;
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LES FORMULAIRES — COMMUNS À LA DEMANDE DE DEVIS ET AU RENDEZ-VOUS
+   ═══════════════════════════════════════════════════════════════════════
+   Ces règles vivaient dans la seule page du devis, où elles étaient
+   « scopées » par Astro. La page de rendez-vous, qui emploie exactement les
+   mêmes classes, s'affichait donc SANS AUCUNE d'elles : bordure de fieldset
+   du navigateur autour du calendrier, champs nus, cibles trop petites. Un
+   gabarit partagé par deux pages appartient à la feuille commune.
+   ═══════════════════════════════════════════════════════════════════════ */
+/* ─── Le formulaire ─────────────────────────────────────────────────── */
+.formulaire {
+  display: grid;
+  gap: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+  max-width: 44rem;
+}
+
+.bloc {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+@media (min-width: 40rem) {
+  .bloc--duo {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+.bloc__titre {
+  padding: 0;
+  font-size: var(--t-petit);
+  font-weight: 600;
+  color: var(--encre);
+}
+
+/* --- Champs --------------------------------------------------------- */
+.champ {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.champ__label {
+  font-size: var(--t-petit);
+  font-weight: 600;
+}
+
+.champ__marque {
+  font-weight: 400;
+  color: var(--encre-3);
+}
+
+.champ__saisie {
+  width: 100%;
+  min-width: 0;
+  /* 16 px au minimum : en dessous, Safari zoome la page au moment de la
+     saisie et le visiteur se retrouve à recadrer d'une main. */
+  font-size: max(1rem, var(--t-petit));
+  min-height: 3rem;
+  padding: 0.6rem 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--trait-champ);
+  border-radius: var(--rayon);
+  box-sizing: border-box;
+  transition: border-color var(--duree) ease;
+}
+
+.champ__saisie:focus-visible {
+  border-color: var(--givre);
+}
+
+.champ__saisie--long {
+  min-height: 6rem;
+  /* Étirable en hauteur, jamais en largeur : une largeur libre casserait
+     la grille. */
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.champ__fichier {
+  width: 100%;
+  min-width: 0;
+  font-size: var(--t-petit);
+  padding: 0.7rem 0.85rem;
+  background: var(--surface);
+  border: 1px dashed var(--trait-champ);
+  border-radius: var(--rayon);
+  box-sizing: border-box;
+}
+
+.champ__aide {
+  font-size: var(--t-kicker);
+  line-height: 1.55;
+  color: var(--encre-3);
+}
+
+/* --- Accord ----------------------------------------------------------- */
+.accord {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  min-height: 3rem;
+  font-size: var(--t-petit);
+  cursor: pointer;
+}
+
+.accord input {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.15rem;
+  accent-color: var(--givre);
+}
+
+/* --- Leurre ----------------------------------------------------------- */
+.leurre {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pied-formulaire {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.75rem;
+  padding-top: 0.5rem;
+}
+
+.pied-formulaire .note {
+  flex: 1 1 18rem;
+  min-width: 0;
+}
+
 /* ─── Apparition au défilement ───────────────────────────────────────────
    « transform » SEULEMENT.
 

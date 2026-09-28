@@ -1,0 +1,14 @@
+---
+/** Servie par la redirection de /api/rendez-vous. Hors index. */
+import Base from '../../layouts/Base.astro';
+import Merci from '../../components/pages/Merci.astro';
+import contenu from '../../data/contenu.json';
+---
+
+<Base
+  titre={`${contenu.merci.rendezvous.titre} — ${contenu.site.nom}`}
+  description={contenu.merci.rendezvous.description}
+  noindex
+>
+  <Merci type="rendezvous" />
+</Base>

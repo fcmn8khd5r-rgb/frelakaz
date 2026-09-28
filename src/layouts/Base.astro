@@ -93,7 +93,12 @@ const partage = new URL('/partage.jpg', site).href;
     <meta property="og:site_name" content={contenu.site.nom} />
     <meta property="og:title" content={titre} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonique} />
+    {/* UNE PAGE HORS INDEX NE DÉCLARE PAS D'ADRESSE DE PARTAGE. La page des
+        adresses égarées est servie sous « 404.html » ; son adresse canonique
+        calculée valait « /404/ », qui ne correspond à aucun fichier. Elle
+        demandait donc aux réseaux de pointer vers une page inexistante —
+        relevé par le contrôle des adresses citées. */}
+    {!noindex && <meta property="og:url" content={canonique} />}
     <meta property="og:image" content={partage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />

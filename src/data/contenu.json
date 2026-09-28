@@ -8,9 +8,9 @@
     "commune": "Baie-Mahault",
     "titre": "Fré Lakaz — climatisation en Guadeloupe : installation, entretien, dépannage",
     "description": "Installation, entretien et dépannage de climatisation en Guadeloupe. Devis sous 24 h, rendez-vous d’entretien en ligne, dépannage joignable tout de suite. Site de démonstration.",
-    "$accroche": "Trois lignes. La dernière porte l'accent. Elle doit se comprendre debout, dehors, sur un téléphone, par quelqu'un dont la clim vient de lâcher.",
+    "$accroche": "Trois lignes. La dernière porte l'accent. Elle doit se comprendre debout, dehors, sur un téléphone, par quelqu'un dont la climatisation vient de s'arrêter. La deuxième ligne est la plus longue : la largeur maximale du titre a été relevée en conséquence, et mesurée de 320 à 1920 px.",
     "accroche1": "Votre clim",
-    "accroche2": "remarche",
+    "accroche2": "fonctionne à nouveau",
     "accroche3": "cette semaine.",
     "sousTitre": "Installation, entretien et dépannage en Guadeloupe. Un devis chiffré sous 24 heures, un rendez-vous d’entretien pris en ligne, et le dépannage joignable tout de suite.",
     "kickerGauche": "Climatisation",
@@ -50,14 +50,14 @@
     "whatsapp": "0690 30 50 37",
     "whatsappLien": "https://wa.me/590690305037?text=Bonjour%2C%20je%20vous%20%C3%A9cris%20depuis%20le%20site%20de%20d%C3%A9monstration%20Fr%C3%A9%20Lakaz.%20Je%20cherche%20un%20d%C3%A9panneur%20climatisation%20en%20Guadeloupe.",
     "email": "contact@frelakaz.gp",
-    "horaires": "Du lundi au vendredi, 7 h - 17 h. Samedi matin sur rendez-vous.",
+    "horaires": "Du lundi au vendredi, de 7 h à 17 h. Samedi matin sur rendez-vous.",
     "delaiReponse": "Réponse sous 24 heures ouvrées."
   },
   "prestations": {
     "$": "Trois prestations, dans l'ordre où on les cherche. SEUL L'ENTRETIEN porte des prix : c'est la seule prestation dont le contenu est constant. Une installation dépend du bâtiment, un dépannage de la panne — annoncer un prix là serait annoncer un prix faux.",
     "rail": "Prestations",
     "accroche": "Trois métiers, un seul interlocuteur.",
-    "intro": "L’entretien est affiché. Le reste se chiffre après une visite, parce qu’un mur de parpaing et une cloison ne se percent pas pareil.",
+    "intro": "L’entretien est affiché. Le reste se chiffre après une visite, parce qu’un mur de parpaing et une cloison ne se percent pas de la même façon.",
     "items": [
       {
         "id": "installation",
@@ -112,7 +112,7 @@
       {
         "id": "depannage",
         "nom": "Dépannage",
-        "resume": "Elle ne refroidit plus, elle coule, elle siffle, elle s’arrête.",
+        "resume": "Elle refroidit mal, elle coule, elle siffle, elle s’arrête.",
         "prix": null,
         "prixMention": "Diagnostic annoncé avant l’intervention",
         "lignes": [
@@ -131,10 +131,10 @@
     "$": "Le bloc d'urgence. Il vient TÔT sur l'accueil : quelqu'un dont la clim a lâché ne lit pas une page, il cherche un bouton. Le message WhatsApp est pré-rempli et mentionne la démonstration.",
     "rail": "Dépannage",
     "accroche": "Elle s’est arrêtée aujourd’hui ?",
-    "texte": "Écrivez-moi sur WhatsApp avec la marque de l’appareil et ce qu’il fait. Je vous réponds le jour même et je vous dis tout de suite si c’est réparable sur place.",
+    "texte": "Écrivez-moi sur WhatsApp avec la marque de l’appareil et ce que vous constatez. Je vous réponds le jour même, et je vous dis d’emblée si la réparation peut se faire sur place.",
     "action": "Écrire sur WhatsApp",
     "actionSecondaire": "Appeler",
-    "horaires": "Du lundi au vendredi, 7 h - 17 h. Samedi matin sur rendez-vous."
+    "horaires": "Du lundi au vendredi, de 7 h à 17 h. Samedi matin sur rendez-vous."
   },
   "zone": {
     "$": "Les 32 communes de Guadeloupe, groupées par délai d'intervention plutôt que par géographie : c'est le délai que le visiteur cherche, pas la carte.",
@@ -289,22 +289,26 @@
       "date-passee": "Ce jour est passé. Choisissez une date à venir.",
       "ferme": "Les créneaux en ligne vont du lundi au vendredi, jours fériés exceptés. Le samedi matin se prend par message.",
       "pris": "Ce créneau vient d’être réservé. Choisissez-en un autre.",
-      "inconnu": "Ce créneau ne figure pas au calendrier."
+      "inconnu": "Choisissez un créneau dans la liste."
     },
-    "$motifs": "Chaque refus nomme SA cause. Une date passée et un créneau pris envoient chercher deux choses différentes ; les confondre fait tourner le visiteur en rond."
+    "$motifs": "Chaque refus nomme SA cause. Une date passée et un créneau pris envoient chercher deux choses différentes ; les confondre fait tourner le visiteur en rond.",
+    "complet": "Complet",
+    "restants": "libres",
+    "$libelles": "Les libellés que le script repose après rafraîchissement sont LUS DANS LE DOCUMENT, par des attributs data-, et non recopiés dans le script : un libellé écrit à deux endroits finit par diverger, et la traduction d'un seul des deux passerait inaperçue.",
+    "restant": "libre"
   },
   "realisations": {
     "$": "TROIS PHOTOGRAPHIES, ET TROIS LÉGENDES QUI DISENT CE QU'ELLES MONTRENT. Le texte a été écrit APRÈS le choix des images, et non l'inverse : une légende qui promet un chantier soigné sous une photographie de groupe encrassé se voit tout de suite. La troisième montre un appareil négligé, et le dit — elle sert l'argument de l'entretien mieux qu'une image flatteuse.",
     "rail": "Sur le terrain",
     "accroche": "Trois situations, trois réponses.",
-    "intro": "Ce qu’on rencontre en Guadeloupe : des groupes en façade, des toitures d’entreprise, et des appareils qu’on a laissés faire.",
+    "intro": "Ce que l’on rencontre en Guadeloupe : des groupes en façade, des toitures d’entreprise, et des appareils laissés à l’abandon.",
     "mention": "Photographies de banque d’images, étalonnées de la même main. Fré Lakaz est une entreprise imaginaire : ces images montrent des situations du métier, pas des chantiers réels. Les auteurs sont cités dans le dépôt du site.",
     "items": [
       {
         "id": "facade-trois-groupes",
         "nom": "Trois groupes en façade",
         "lieu": "Le Gosier",
-        "texte": "Trois unités sur supports muraux, de part et d’autre d’une persienne. Posées du côté que le soleil quitte l’après-midi : un groupe qui cuit consomme davantage pour le même froid."
+        "texte": "Trois unités sur supports muraux, de part et d’autre d’une persienne. Posées du côté que le soleil quitte l’après-midi : un groupe exposé au plein soleil consomme davantage pour le même froid."
       },
       {
         "id": "toiture-commerciale",
@@ -316,7 +320,7 @@
         "id": "avant-entretien",
         "nom": "Avant entretien",
         "lieu": "Sainte-Rose",
-        "texte": "Voilà ce que devient un groupe qu’on laisse faire : la végétation gagne l’échangeur, l’air ne passe plus, et la facture monte avant que l’appareil rende l’âme. Deux heures suffisent à le remettre en état."
+        "texte": "Voilà ce que devient un groupe laissé à lui-même : la végétation gagne l’échangeur, l’air peine à passer, et la facture monte bien avant que le compresseur en souffre. Deux heures suffisent à le remettre en état."
       }
     ]
   },
@@ -371,7 +375,7 @@
       },
       {
         "q": "Alors pourquoi entretenir une petite installation ?",
-        "r": "Pour ce qu’elle vous coûte et pour ce qu’elle dure. Sous nos embruns et notre poussière, un filtre encrassé fait grimper la consommation, puis fait givrer l’échangeur, et le compresseur finit par en souffrir. Un passage par an suffit à la plupart des installations domestiques, et vous nettoyez les filtres vous-même entre deux — je vous montre comment à la mise en service."
+        "r": "Pour ce qu’elle vous coûte et pour ce qu’elle dure. Sous nos embruns et notre poussière, un filtre encrassé fait grimper la consommation, puis fait givrer l’échangeur, et le compresseur finit par en souffrir. Un passage par an suffit à la plupart des installations domestiques, et vous nettoyez les filtres vous-même entre deux passages — je vous montre comment procéder à la mise en service."
       },
       {
         "q": "Sous quel délai intervenez-vous ?",
@@ -383,7 +387,7 @@
       },
       {
         "q": "Comment se passe une pose ?",
-        "r": "Comptez une demi-journée pour un split, une journée pour un multi-split de trois unités. Il faut percer le mur pour la liaison frigorifique, poser le support du groupe extérieur, tirer l’évacuation des condensats et raccorder l’électricité. Prévoyez l’accès au tableau électrique ; le reste vient avec moi."
+        "r": "Comptez une demi-journée pour un split, une journée pour un multi-split de trois unités. Il faut percer le mur pour la liaison frigorifique, poser le support du groupe extérieur, tirer l’évacuation des condensats et raccorder l’électricité. Prévoyez l’accès au tableau électrique ; j’apporte le reste."
       }
     ]
   },
@@ -465,7 +469,11 @@
     "voirPlus": "Voir le détail",
     "aPartirDe": "à partir de",
     "euros": "€",
-    "altChantier": "Chantier :"
+    "altChantier": "Chantier :",
+    "navMenu": "Menu du site",
+    "navPied": "Plan du site",
+    "$repères": "DEUX REPÈRES DE NAVIGATION NE PARTAGENT JAMAIS UN NOM : « landmark-unique » le relève, et deux listes homonymes se confondent à l'oreille d'un lecteur d'écran. La barre d'ordinateur, le panneau de téléphone et le pied de page en portent donc trois différents.",
+    "piedContact": "Contact"
   },
   "egaree": {
     "$": "La page servie quand l'adresse demandée mène ailleurs.",
@@ -576,6 +584,7 @@
           ]
         }
       ]
-    }
+    },
+    "$negations": "Les négations des mentions légales sont VOULUES : « rien n'est envoyé », « aucun numéro n'est attribué ». La règle de rédaction — ne jamais nommer ce qui manque — vise la prose commerciale, où elle affaiblit ; ici, nommer ce qui n'existe pas EST l'information."
   }
 }

@@ -18,15 +18,14 @@
  *   · ressource en erreur — « transferSize » à zéro étant une lecture en
  *     cache, et non un échec.
  */
+import { pages } from './pages.mjs';
 import { chromium } from 'playwright';
 
-const BASE = process.env.BASE || 'http://127.0.0.1:4477';
-const PAGES = [
-  '/', '/flotte/', '/reserver/', '/conditions/', '/avis/', '/questions/',
-  '/merci/', '/mentions-legales/', '/404.html',
-  '/en/', '/en/fleet/', '/en/book/', '/en/terms/', '/en/reviews/',
-  '/en/faq/', '/en/thank-you/', '/en/legal-notice/',
-];
+const BASE = process.env.BASE || 'http://127.0.0.1:4488';
+/* LA LISTE VIENT DE LA CONSTRUCTION, et non d'ici : recopiée, elle laisse
+   toute page neuve hors de tout contrôle, et le rapport reste vert. Voir
+   scripts/pages.mjs. */
+const PAGES = await pages();
 const LARGEURS = [320, 360, 390, 430, 540, 768, 900, 1024, 1280, 1440, 1920];
 
 export const SONDE = () => {
@@ -49,9 +48,14 @@ export const SONDE = () => {
 
   for (const e of document.querySelectorAll('p, h1, h2, h3, dd, dt, li, span, a, button, legend, figcaption')) {
     if (!e.firstChild || e.children.length) continue;
-    /* « .lecteur-seul » est rogné par construction : c'est ainsi qu'on réserve
-       un texte au lecteur d'écran. Le signaler serait accuser le procédé. */
-    if (e.closest('.lecteur-seul')) continue;
+    /* LE TEXTE RÉSERVÉ AUX LECTEURS D'ÉCRAN EST ROGNÉ PAR CONSTRUCTION :
+       c'est ainsi qu'on le retire de l'affichage sans le retirer de l'arbre
+       d'accessibilité. Le signaler comme « texte rogné » revient à signaler
+       qu'il fait ce qu'on lui demande — 419 constats sur ce seul motif. La
+       classe s'appelle « visuellement-cache » ici et « lecteur-seul »
+       ailleurs : on reconnaît les deux, plutôt que de recopier un nom qui
+       changera au site suivant. */
+    if (e.closest('.lecteur-seul, .visuellement-cache')) continue;
     const s = getComputedStyle(e);
     if (s.overflow === 'visible' || s.display === 'none') continue;
     if (e.scrollWidth > e.clientWidth + 1 || e.scrollHeight > e.clientHeight + 1) {
@@ -62,7 +66,7 @@ export const SONDE = () => {
   /* Superposition : boîte PEINTE d'un élément à fond ou bordure contre les
      rectangles de LIGNE des textes nus. Une boîte englobante mentirait sur un
      texte replié, et plus encore sur un texte en colonnes. */
-  const EXCLUS = ['.evitement', '.lecteur-seul', 'dialog', '.visio', '[hidden]'];
+  const EXCLUS = ['.evitement', '.saut', '.lecteur-seul', '.visuellement-cache', 'dialog', '.visio', '[hidden]'];
 
   /* UN ÉLÉMENT FIXE FLOTTE PAR NATURE, ET SES ENFANTS AVEC LUI.
      Premier essai : j'écartais les éléments dont la position est « fixed »,

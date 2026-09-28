@@ -346,7 +346,12 @@ const cartes = await Promise.all(
     font-size: var(--t-mega);
     line-height: 1.02;
     letter-spacing: -0.03em;
-    max-width: 13ch;
+    /* La deuxième ligne — « fonctionne à nouveau » — fait vingt signes : à
+       13ch elle se repliait en plein milieu. La mesure est prise sur la plus
+       longue des trois, et non sur la moyenne. Sur un écran étroit elle se
+       replie quand même, et c'est très bien : quatre lignes valent mieux
+       qu'un titre qui sort de l'écran. */
+    max-width: 20ch;
   }
 
   .ouverture__titre span,

@@ -11,6 +11,8 @@
  * avant le premier rendu. Ses dimensions sont déclarées, donc la place est
  * réservée et rien ne se décale.
  */
+import contenu from '../data/contenu.json';
+
 interface Props {
   /** Dans le pied de page, la marque est posée, pas cliquable. */
   statique?: boolean;
@@ -32,7 +34,11 @@ const Balise = statique ? 'span' : 'a';
     <path d="M2 13c5-4 9 4 14 0s9-4 14 0" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" opacity="0.62" />
     <path d="M2 20c5-4 9 4 14 0s9-4 14 0" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" opacity="0.32" />
   </svg>
-  <span class="marque__nom">Fré Lakaz</span>
+  {/* LE NOM VIENT DU FICHIER DE CONTENU, comme tout le reste : il était écrit
+      en dur ici, et le contrôle de rédaction l'a relevé. Un nom de marque
+      recopié dans un composant est un nom de marque qui finira par diverger
+      de celui des titres et du pied de page. */}
+  <span class="marque__nom">{contenu.site.nom}</span>
 </Balise>
 
 <style>

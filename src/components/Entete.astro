@@ -44,7 +44,7 @@ const ici = Astro.url.pathname;
             l'élément de grille continue de s'afficher. */}
         <div class="mobile__panneau">
           <div class="mobile__interieur">
-            <nav class="mobile__liste" aria-label={contenu.ui.navPrincipale}>
+            <nav class="mobile__liste" aria-label={contenu.ui.navMenu}>
               {
                 [...pages, ...sections].map((s) => (
                   <a
@@ -84,6 +84,14 @@ const ici = Astro.url.pathname;
   .entete__interieur {
     display: flex;
     align-items: center;
+    /* ELLE SE REPLIE PLUTÔT QUE DE DÉBORDER. À 200 % de taille de texte, la
+       marque et le bouton « Menu » réclamaient 420 px pour 310 disponibles :
+       110 px hors de l'écran, mesurés. On préfère deux rangées à un
+       débordement — et surtout à un texte rapetissé, qui reviendrait à
+       refuser au lecteur l'agrandissement qu'il a demandé. */
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 0.5rem;
     gap: 1rem;
     min-height: var(--h-entete);
     max-width: var(--largeur);

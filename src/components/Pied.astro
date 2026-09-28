@@ -26,13 +26,13 @@ const annee = new Date().getFullYear();
         <p class="pied__horaires chiffre">{contenu.contact.horaires}</p>
       </div>
 
-      <nav class="pied__col" aria-label={contenu.ui.navPrincipale}>
+      <nav class="pied__col" aria-label={contenu.ui.navPied}>
         <p class="pied__intitule">{contenu.site.nom}</p>
         {[...pages, ...sections].map((s) => <a class="pied__lien" href={s.href}>{s.label}</a>)}
       </nav>
 
       <div class="pied__col">
-        <p class="pied__intitule">Contact</p>
+        <p class="pied__intitule">{contenu.ui.piedContact}</p>
         <a class="pied__lien chiffre" href={contenu.contact.telephoneLien}>
           {contenu.contact.telephone}
         </a>

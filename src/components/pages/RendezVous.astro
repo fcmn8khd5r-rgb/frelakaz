@@ -1,0 +1,432 @@
+---
+/**
+ * LA PRISE DE RENDEZ-VOUS.
+ *
+ * UN JOUR = UN <details>. Le navigateur sait ouvrir et fermer un <details>,
+ * l'annoncer à un lecteur d'écran et le piloter au clavier : la page
+ * fonctionne donc entièrement sans script. Le premier jour qui offre un
+ * créneau est ouvert d'emblée — s'ouvrir sur une journée complète donnerait
+ * l'impression d'un artisan débordé.
+ *
+ * LE CALENDRIER EST RENDU À LA CONSTRUCTION, PUIS RAFRAÎCHI. Un site statique
+ * fige son calendrier au jour où il est construit ; sans rafraîchissement, il
+ * proposerait demain les créneaux d'hier. La page part donc de l'état de la
+ * construction — pour n'être jamais vide, et pour servir sans script — et le
+ * script la remet à jour au chargement depuis /api/creneaux. Dans tous les
+ * cas, le serveur revérifie à l'envoi et nomme sa cause de refus.
+ *
+ * LE CRÉNEAU VOYAGE EN UN SEUL CHAMP — « 2026-09-28#matin-1 » — parce qu'un
+ * jour et une heure séparés peuvent arriver dépareillés.
+ */
+import contenu from '../../data/contenu.json';
+import { journees, premierJourLibre, jour } from '../../lib/rendezvous.mjs';
+
+const r = contenu.rendezvous;
+const communes = contenu.zone.groupes.flatMap((g) => g.communes).sort((a, b) => a.localeCompare(b, 'fr'));
+
+const JOURS = 21;
+const liste = journees(new Date(), JOURS).filter((j) => j.ouvre && !j.passe);
+const premier = jour(premierJourLibre());
+
+/**
+ * LA DATE, À LA FRANÇAISE.
+ *
+ * « dateStyle » rend « lundi 28 septembre », ce qui est juste — mais la
+ * capitalisation CSS mettait une majuscule à CHAQUE mot : « Lundi 28
+ * Septembre ». En français, le jour et le mois restent en bas de casse, et
+ * seule la première lettre de la ligne se relève. Et le premier du mois
+ * s'écrit « 1er », jamais « 1 ».
+ */
+const nomJour = new Intl.DateTimeFormat('fr-FR', { weekday: 'long', timeZone: 'UTC' });
+const nomMois = new Intl.DateTimeFormat('fr-FR', { month: 'long', timeZone: 'UTC' });
+const moisCourt = new Intl.DateTimeFormat('fr-FR', { month: 'short', timeZone: 'UTC' });
+
+const quantieme = (d: Date) => (d.getUTCDate() === 1 ? '1er' : String(d.getUTCDate()));
+const dateLongue = (d: Date) => {
+  const texte = `${nomJour.format(d)} ${quantieme(d)} ${nomMois.format(d)}`;
+  return texte.charAt(0).toUpperCase() + texte.slice(1);
+};
+const dateCourte = (d: Date) => `${quantieme(d)} ${moisCourt.format(d)}`;
+---
+
+<section class="section section--premiere" aria-labelledby="rdv-titre">
+  <div class="enveloppe">
+    <nav class="fil" aria-label={contenu.ui.navFil}>
+      <ol class="fil__liste">
+        <li><a class="fil__lien" href="/">{contenu.site.nom}</a></li>
+        <li>
+          <span class="fil__trait" aria-hidden="true">/</span>
+          <span aria-current="page">{r.titre}</span>
+        </li>
+      </ol>
+    </nav>
+
+    <p class="rail" id="rdv-titre">{r.rail}</p>
+    <h1 class="rdv__titre">{r.accroche}</h1>
+    <p class="rdv__intro">{r.intro}</p>
+    <p class="note rdv__demo">{contenu.demo.formulaire}</p>
+  </div>
+</section>
+
+<section class="section section--suite" aria-label={r.titre}>
+  <div class="enveloppe">
+    <form class="formulaire" method="POST" action="/api/rendez-vous" accept-charset="utf-8">
+      <fieldset class="bloc">
+        <legend class="bloc__titre">{r.jourLabel}</legend>
+
+        <div class="jours" data-jours data-premier={premier}>
+          {
+            liste.map((j) => (
+              <details class="journee" open={j.date === premier} data-jour={j.date}>
+                <summary class="journee__titre">
+                  <span class="journee__long">{dateLongue(new Date(`${j.date}T00:00:00Z`))}</span>
+                  {/* Les libellés voyagent en attributs : le script les REPOSE après
+                      rafraîchissement, et il les lit ici plutôt que de les recopier. */}
+                  <span
+                    class="journee__reste chiffre"
+                    data-reste
+                    data-libre={r.restant}
+                    data-libres={r.restants}
+                    data-aucun={r.complet}
+                  >
+                    {j.restants > 0 ? `${j.restants} ${j.restants > 1 ? r.restants : r.restant}` : r.complet}
+                  </span>
+                </summary>
+                <div class="journee__panneau">
+                  <div class="creneaux" data-creneaux>
+                    {
+                      j.creneaux.map((c) => (
+                        <label class:list={['creneau', !c.libre && 'creneau--pris']}>
+                          <input
+                            type="radio"
+                            name="creneau"
+                            value={`${j.date}#${c.id}`}
+                            disabled={!c.libre}
+                            required
+                          />
+                          <span class="creneau__heures chiffre">
+                            {c.debut} – {c.fin}
+                          </span>
+                          <span class="creneau__etat" data-libre={r.libre} data-pris={r.pris}>
+                            {c.libre ? r.libre : r.pris}
+                          </span>
+                        </label>
+                      ))
+                    }
+                  </div>
+                </div>
+              </details>
+            ))
+          }
+        </div>
+        <p class="champ__aide">{r.duree} <span aria-hidden="true">·</span> {dateCourte(new Date(`${liste[0].date}T00:00:00Z`))} → {dateCourte(new Date(`${liste.at(-1)!.date}T00:00:00Z`))}</p>
+      </fieldset>
+
+      <div class="bloc">
+        <p class="champ">
+          <label class="champ__label" for="commune">{contenu.devis.communeLabel}</label>
+          <select class="champ__saisie" id="commune" name="commune" required>
+            <option value="">{contenu.devis.communeDefaut}</option>
+            {communes.map((n) => <option value={n}>{n}</option>)}
+          </select>
+        </p>
+      </div>
+
+      <div class="bloc bloc--duo">
+        <p class="champ">
+          <label class="champ__label" for="nom">
+            {contenu.devis.nomLabel} <span class="champ__marque">({contenu.devis.obligatoire})</span>
+          </label>
+          <input class="champ__saisie" type="text" id="nom" name="nom" autocomplete="name" required />
+        </p>
+        <p class="champ">
+          <label class="champ__label" for="telephone">
+            {contenu.devis.telephoneLabel}
+            <span class="champ__marque">({contenu.devis.obligatoire})</span>
+          </label>
+          <input
+            class="champ__saisie chiffre"
+            type="tel"
+            id="telephone"
+            name="telephone"
+            autocomplete="tel"
+            inputmode="tel"
+            required
+          />
+        </p>
+      </div>
+
+      <p class="leurre">
+        <label class="champ__label" for="site">{contenu.devis.potLabel}</label>
+        <input type="text" id="site" name="site" tabindex="-1" autocomplete="off" />
+      </p>
+
+      <div class="bloc">
+        <label class="accord">
+          <input type="checkbox" name="consentement" value="oui" required />
+          <span>{contenu.devis.consentementLabel}</span>
+        </label>
+      </div>
+
+      <div class="pied-formulaire">
+        <button class="bouton bouton--principal" type="submit">{r.confirmer}</button>
+        <p class="note">{contenu.devis.reserve}</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  .fil {
+    margin-bottom: clamp(1.25rem, 1rem + 1.2vw, 2rem);
+    font-size: var(--t-petit);
+  }
+
+  .fil__liste {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .fil__liste li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    min-width: 0;
+    color: var(--encre-3);
+    overflow-wrap: anywhere;
+  }
+
+  .fil__lien {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    margin-block: -0.7rem;
+    color: var(--encre-3);
+    text-decoration: none;
+  }
+
+  .fil__lien:hover {
+    color: var(--encre);
+  }
+
+  .fil__trait {
+    color: var(--encre-3);
+  }
+
+  .rdv__titre {
+    margin-top: 0.75rem;
+    font-size: var(--t-titre);
+    max-width: 16ch;
+  }
+
+  .rdv__intro {
+    margin-top: 1rem;
+    max-width: 52ch;
+    color: var(--encre-2);
+  }
+
+  .rdv__demo {
+    margin-top: 1.25rem;
+    padding: 0.85rem 1rem;
+    background: var(--givre-pale);
+    border-left: 3px solid var(--givre);
+    border-radius: 0 var(--rayon) var(--rayon) 0;
+    color: var(--encre-2);
+  }
+
+  /* --- Les journées ---------------------------------------------------- */
+  .jours {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    border-top: 1px solid var(--trait);
+  }
+
+  .journee {
+    border-bottom: 1px solid var(--trait);
+  }
+
+  .journee__titre {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    min-height: 3.5rem;
+    padding-block: 0.75rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .journee__titre::-webkit-details-marker {
+    display: none;
+  }
+
+  .journee__long {
+    font-weight: 600;
+    /* AUCUNE transformation : « capitalize » relève chaque mot et donnait
+       « Lundi 28 Septembre ». La majuscule initiale est posée dans le
+       texte, où le français la veut. */
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .journee__reste {
+    font-size: var(--t-kicker);
+    color: var(--encre-3);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* REPLIÉE, LA JOURNÉE NE DOIT PLUS RIEN OCCUPER. Une boîte en « grid »
+     laissée en place continue de réserver sa hauteur dans certains moteurs, et
+     le contenu déborde au zoom. */
+  .journee:not([open]) .journee__panneau {
+    display: none;
+  }
+
+  .journee__panneau {
+    padding-bottom: 1rem;
+  }
+
+  .creneaux {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(9.5rem, 100%), 1fr));
+    gap: 0.5rem;
+  }
+
+  .creneau {
+    display: grid;
+    gap: 0.15rem;
+    min-height: 3.5rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--surface);
+    border: 1px solid var(--trait-champ);
+    border-radius: var(--rayon);
+    cursor: pointer;
+  }
+
+  .creneau input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .creneau:has(input:checked) {
+    border-color: var(--givre);
+    background: var(--givre-pale);
+    box-shadow: inset 0 0 0 1px var(--givre);
+  }
+
+  .creneau:has(input:focus-visible) {
+    outline: 3px solid var(--givre);
+    outline-offset: 2px;
+  }
+
+  /* Un créneau pris reste LISIBLE : il est grisé, pas effacé. Un texte à
+     2:1 de contraste n'informe plus, il encombre. */
+  .creneau--pris {
+    background: var(--surface-2);
+    border-style: dashed;
+    cursor: default;
+  }
+
+  .creneau__heures {
+    font-size: var(--t-petit);
+    font-weight: 500;
+  }
+
+  .creneau__etat {
+    font-size: var(--t-kicker);
+    color: var(--encre-3);
+  }
+</style>
+
+<script>
+  /**
+   * LE RAFRAÎCHISSEMENT DU CALENDRIER.
+   *
+   * La page est rendue à la construction : elle est juste le jour où elle est
+   * bâtie, et vieillit ensuite. Le script redemande l'état du jour et remet
+   * les journées à leur place — celles qui sont passées disparaissent, les
+   * créneaux pris depuis se ferment.
+   *
+   * SANS LUI, LA PAGE RESTE UTILISABLE : elle affiche l'état de la
+   * construction, et le serveur refuse à l'envoi tout créneau devenu
+   * impossible, EN NOMMANT SA CAUSE. On ne perd donc jamais le visiteur.
+   *
+   * Un seul jour ouvert à la fois : deux calendriers dépliés côte à côte
+   * demandent de chercher, là où un seul se parcourt.
+   */
+  const conteneur = document.querySelector<HTMLElement>('[data-jours]');
+
+  if (conteneur) {
+    /* Un seul <details> ouvert à la fois. */
+    const journees = () => [...conteneur.querySelectorAll<HTMLDetailsElement>('.journee')];
+    conteneur.addEventListener('toggle', (e) => {
+      const ouvert = e.target as HTMLDetailsElement;
+      if (!ouvert.open) return;
+      for (const d of journees()) if (d !== ouvert) d.open = false;
+    }, true);
+
+    /* La remise à jour, depuis la fonction qui connaît la date du jour. */
+    (async () => {
+      let frais;
+      try {
+        const r = await fetch('/api/creneaux?jours=21', { headers: { accept: 'application/json' } });
+        if (!r.ok) return;
+        frais = (await r.json()).journees as {
+          date: string; ouvre: boolean; passe: boolean; restants: number;
+          creneaux: { id: string; libre: boolean }[];
+        }[];
+      } catch {
+        /* Réseau muet : on garde ce qui est affiché, et le serveur tranchera
+           à l'envoi. */
+        return;
+      }
+      if (!Array.isArray(frais)) return;
+
+      const parDate = new Map(frais.map((j) => [j.date, j]));
+      let premierLibre: HTMLDetailsElement | null = null;
+
+      for (const details of journees()) {
+        const date = details.dataset.jour!;
+        const j = parDate.get(date);
+
+        /* Une journée passée ou fermée quitte la liste. */
+        if (!j || j.passe || !j.ouvre) {
+          details.remove();
+          continue;
+        }
+
+        for (const label of details.querySelectorAll<HTMLElement>('.creneau')) {
+          const champ = label.querySelector<HTMLInputElement>('input');
+          if (!champ) continue;
+          const id = champ.value.split('#')[1];
+          const libre = j.creneaux.find((c) => c.id === id)?.libre ?? false;
+          champ.disabled = !libre;
+          if (!libre) champ.checked = false;
+          label.classList.toggle('creneau--pris', !libre);
+          const etat = label.querySelector<HTMLElement>('.creneau__etat');
+          if (etat) etat.textContent = libre ? etat.dataset.libre! : etat.dataset.pris!;
+        }
+
+        const reste = details.querySelector<HTMLElement>('[data-reste]');
+        if (reste) {
+          /* L'accord du pluriel se fait ici aussi : « 1 libre », « 2 libres ». */
+          const mot = j.restants > 1 ? reste.dataset.libres! : reste.dataset.libre!;
+          reste.textContent = j.restants > 0 ? `${j.restants} ${mot}` : reste.dataset.aucun!;
+        }
+
+        if (!premierLibre && j.restants > 0) premierLibre = details;
+      }
+
+      /* On rouvre sur le premier jour qui offre encore un créneau. */
+      for (const d of journees()) d.open = d === premierLibre;
+    })();
+  }
+</script>

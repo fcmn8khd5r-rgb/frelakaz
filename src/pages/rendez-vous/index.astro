@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+import RendezVous from '../../components/pages/RendezVous.astro';
+import contenu from '../../data/contenu.json';
+---
+
+<Base
+  titre={`${contenu.rendezvous.titre} — ${contenu.site.nom}`}
+  description={contenu.rendezvous.description}
+>
+  <RendezVous />
+</Base>

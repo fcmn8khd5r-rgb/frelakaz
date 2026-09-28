@@ -5,15 +5,36 @@
  * et 390 ms de blocage : la mesure décrivait la machine, non le site. On sert
  * donc « dist » et rien d'autre, et l'on prend la MÉDIANE de deux passages.
  */
+import { pages } from './pages.mjs';
 import lighthouse from 'lighthouse';
 import { chromium } from 'playwright';
 
-const BASE = process.env.BASE || 'http://127.0.0.1:4477';
-const PAGES = ['/', '/flotte/', '/reserver/', '/conditions/', '/en/'];
+const BASE = process.env.BASE || 'http://127.0.0.1:4488';
+/* LA LISTE VIENT DE LA CONSTRUCTION, et non d'ici : recopiée, elle laisse
+   toute page neuve hors de tout contrôle, et le rapport reste vert. Voir
+   scripts/pages.mjs. */
+const PAGES = (await pages()).filter((p) => !p.endsWith('.html'));
 
 const nav = await chromium.launch({ args: ['--remote-debugging-port=9222'] });
 const port = 9222;
 let pire = { perf: 100, acces: 100, bonnes: 100, seo: 100 };
+
+/* LES PAGES HORS INDEX ONT UN RÉFÉRENCEMENT BAS PAR CONSTRUCTION.
+
+   Lighthouse retire des points dès qu'une page porte « noindex » : c'est le
+   comportement attendu, mais ici c'est NOUS qui le demandons. Les deux
+   confirmations tombaient donc à 63, et la chaîne entière échouait sur un
+   réglage volontaire. On lit le « noindex » dans le fichier construit, et
+   l'on ne juge pas ces pages sur ce critère — les trois autres, si. */
+const { readFile } = await import('node:fs/promises');
+const horsIndex = async (chemin) => {
+  const fichier = chemin === '/' ? 'dist/index.html' : `dist${chemin}index.html`;
+  try {
+    return /<meta name="robots" content="noindex/.test(await readFile(fichier, 'utf8'));
+  } catch {
+    return false;
+  }
+};
 
 for (const chemin of PAGES) {
   const passages = [];
@@ -46,9 +67,14 @@ for (const chemin of PAGES) {
     lcp: Math.max(...passages.map((p) => p.lcp)),
     poids: Math.max(...passages.map((p) => p.poids)),
   };
-  for (const k of ['perf', 'acces', 'bonnes', 'seo']) pire[k] = Math.min(pire[k], m[k]);
-  console.log(`  ${chemin.padEnd(28)} ${m.perf} / ${m.acces} / ${m.bonnes} / ${m.seo}` +
-              `   CLS ${m.cls.toFixed(3)} · LCP ${(m.lcp / 1000).toFixed(2)} s · ${Math.round(m.poids / 1024)} Ko`);
+  const sansSeo = await horsIndex(chemin);
+  const juges = sansSeo ? ['perf', 'acces', 'bonnes'] : ['perf', 'acces', 'bonnes', 'seo'];
+  for (const k of juges) pire[k] = Math.min(pire[k], m[k]);
+  console.log(
+    `  ${chemin.padEnd(28)} ${m.perf} / ${m.acces} / ${m.bonnes} / ${sansSeo ? '—' : m.seo}` +
+      `   CLS ${m.cls.toFixed(3)} · LCP ${(m.lcp / 1000).toFixed(2)} s · ${Math.round(m.poids / 1024)} Ko` +
+      (sansSeo ? '   (hors index : référencement non jugé)' : ''),
+  );
 }
 
 await nav.close();

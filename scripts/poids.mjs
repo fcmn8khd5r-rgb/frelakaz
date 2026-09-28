@@ -7,7 +7,7 @@ for (const [nom, l, h, dpr] of [['téléphone', 390, 844, 3], ['ordinateur', 144
   page.on('response', async (r) => {
     try { const b = (await r.body()).length; recu.push({ url: r.url(), o: b, type: r.request().resourceType() }); } catch {}
   });
-  await page.goto('http://127.0.0.1:4477/', { waitUntil: 'networkidle' });
+  await page.goto('http://127.0.0.1:4488/', { waitUntil: 'networkidle' });
   const total = recu.reduce((s, r) => s + r.o, 0);
   console.log(`\n── ${nom} ${l}×${h} ×${dpr} · ${recu.length} requêtes · ${Math.round(total / 1024)} Ko`);
   for (const r of recu.sort((a, b) => b.o - a.o).slice(0, 6)) {
