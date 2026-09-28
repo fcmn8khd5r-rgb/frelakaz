@@ -45,13 +45,14 @@
   },
   "contact": {
     "$": "LA SEULE SOURCE du numéro et de l'adresse. Le numéro est le numéro professionnel de Mathys : les démonstrations mènent à lui, et le message WhatsApp pré-rempli dit d'où vient le visiteur.",
-    "telephone": "0690 30 50 37",
+    "telephone": "0690 30 50 37",
     "telephoneLien": "tel:+590690305037",
-    "whatsapp": "0690 30 50 37",
+    "whatsapp": "0690 30 50 37",
     "whatsappLien": "https://wa.me/590690305037?text=Bonjour%2C%20je%20vous%20%C3%A9cris%20depuis%20le%20site%20de%20d%C3%A9monstration%20Fr%C3%A9%20Lakaz.%20Je%20cherche%20un%20d%C3%A9panneur%20climatisation%20en%20Guadeloupe.",
     "email": "contact@frelakaz.gp",
     "horaires": "Du lundi au vendredi, de 7 h à 17 h. Samedi matin sur rendez-vous.",
-    "delaiReponse": "Réponse sous 24 heures ouvrées."
+    "delaiReponse": "Réponse sous 24 heures ouvrées.",
+    "$telephone": "Les espaces du numéro sont INSÉCABLES : avec des espaces ordinaires, « 0690 30 50 37 » se coupe en fin de ligne et cesse d'être un numéro. Le validateur de balisage le relève."
   },
   "prestations": {
     "$": "Trois prestations, dans l'ordre où on les cherche. SEUL L'ENTRETIEN porte des prix : c'est la seule prestation dont le contenu est constant. Une installation dépend du bâtiment, un dépannage de la panne — annoncer un prix là serait annoncer un prix faux.",

@@ -20,11 +20,12 @@
     "acces": "node scripts/acces.mjs",
     "metriques": "node scripts/metriques.mjs",
     "poids": "node scripts/poids.mjs",
-    "tout": "npm run check && npm run build && npm run redaction && npm run sonde && npm run audit && npm run interactions && npm run acces && npm run adresses && npm run metriques",
+    "tout": "npm run check && npm run build && npm run redaction && npm run sonde && npm run audit && npm run interactions && npm run acces && npm run adresses && npm run extremes && npm run metriques",
     "polices": "node scripts/polices.mjs",
     "redaction": "node scripts/redaction.mjs",
     "adresses": "node scripts/adresses.mjs",
-    "planches": "node scripts/planches.mjs"
+    "planches": "node scripts/planches.mjs",
+    "extremes": "node scripts/extremes.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",

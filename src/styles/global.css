@@ -321,6 +321,12 @@ textarea {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  /* IL SE REPLIE. Le bouton « Appeler 0690 30 50 37 » porte un numéro rendu
+     insécable — pour qu'il cesse d'être un numéro s'il se coupe. À 200 % de
+     taille de texte, le libellé et le numéro réclamaient 405 px pour 310 :
+     95 px hors de l'écran, mesurés. Le bouton passe donc à la ligne entre les
+     deux, et le numéro reste entier. */
+  flex-wrap: wrap;
   gap: 0.5rem;
   /* 48 px : confortable au pouce, et au-delà du minimum de 44. */
   min-height: 3rem;
