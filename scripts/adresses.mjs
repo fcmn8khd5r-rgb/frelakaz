@@ -80,6 +80,32 @@ for (const f of fichiers) {
    canoniques, et on veut savoir si le domaine répond encore. */
 cite(data.site.url, 'contenu.json');
 
+/* LES HÔTES QU'ON NE PEUT PLUS ATTEINDRE D'ICI — ET LA DATE OÙ ON L'A FAIT.
+
+   Légifrance est passée derrière une vérification anti-robot qui interpose une
+   page d'attente : elle refuse « fetch », elle refuse le navigateur piloté, et
+   elle refuserait tout outil. La page EXISTE — son texte a été lu et cité le
+   27 septembre 2026, par ce même navigateur, avant que la protection ne se
+   durcisse.
+
+   Deux mauvaises réponses à cette situation : la compter comme morte, et le
+   contrôle rougit à chaque passage jusqu'à ce qu'on cesse de le lire ; la
+   passer en silence, et une vraie disparition passerait avec elle. On la sort
+   donc du verdict, et on l'ÉNUMÈRE avec la date de sa dernière vérification à
+   la main. Le jour où cette date vieillit, elle se relit. */
+const A_LA_MAIN = {
+  'legifrance.gouv.fr': '27 septembre 2026',
+};
+
+const aLaMain = (u) => {
+  try {
+    const h = new URL(u).hostname.replace(/^www\./, '');
+    return A_LA_MAIN[h] ?? null;
+  } catch {
+    return null;
+  }
+};
+
 /* « schema.org » n'est pas un lien mais un espace de noms : il n'a jamais
    vocation à être ouvert, et le vocabulaire reste valable même si le site est
    momentanément indisponible. */
@@ -182,12 +208,18 @@ if (aRejuger.length) {
 }
 
 const echecs = [];
+const manuelles = [];
 for (const r of resultats.sort((a, b) => a.url.localeCompare(b.url))) {
   const ou = [...citations.get(r.url)].sort().join(', ');
   if (r.code >= 200 && r.code < 300) {
     const devie = r.arrivee && r.arrivee.replace(/\/$/, '') !== r.url.replace(/\/$/, '');
     const source = r.parNavigateur ? '  (vérifié au navigateur)' : '';
     console.log(`  ✓ ${String(r.code)} ${r.url}${devie ? `  → ${r.arrivee}` : ''}${source}`);
+  } else if (aLaMain(r.url)) {
+    manuelles.push(r);
+    console.log(`  · ${r.code || '—'} ${r.url}`);
+    console.log(`      protection anti-robot — dernière lecture à la main : ${aLaMain(r.url)}`);
+    console.log(`      cité sur : ${ou}`);
   } else {
     echecs.push(r);
     console.log(`  ✗ ${r.code || '—'} ${r.url}`);
@@ -209,4 +241,10 @@ if (echecs.length || manquantes.length) {
   }
   process.exit(1);
 }
-console.log(`\n✓ ${resultats.length} ADRESSES EXTÉRIEURES ET ${miennes.length} INTERNES : TOUTES RÉPONDENT.`);
+console.log(
+  `\n✓ ${resultats.length - manuelles.length} ADRESSES EXTÉRIEURES ET ${miennes.length} INTERNES : TOUTES RÉPONDENT.` +
+    (manuelles.length
+      ? `\n  · ${manuelles.length} derrière une protection anti-robot, vérifiée(s) à la main : ` +
+        manuelles.map((m) => `${new URL(m.url).hostname} (${aLaMain(m.url)})`).join(', ')
+      : ''),
+);

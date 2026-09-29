@@ -71,6 +71,19 @@ const dateCourte = (d: Date) => `${quantieme(d)} ${moisCourt.format(d)}`;
 <section class="section section--suite" aria-label={r.titre}>
   <div class="enveloppe">
     <form class="formulaire" method="POST" action="/api/rendez-vous" accept-charset="utf-8">
+      {/* LE REFUS SE VOIT, MÊME SANS SCRIPT.
+
+          La fonction renvoie ici avec « ?erreur=…#erreur ». Le texte
+          générique paraît par « :target », que le navigateur applique tout
+          seul ; le script le remplace par la raison exacte quand elle est
+          présente. Sans lui, le visiteur sait au moins qu'il doit reprendre
+          le formulaire — ce qui vaut mieux que de revenir sur une page
+          silencieuse. */}
+      <p class="alerte" id="erreur" role="alert" tabindex="-1">
+        <strong class="alerte__titre">{contenu.ui.erreurTitre}</strong>
+        <span class="alerte__texte" data-erreur>{contenu.ui.erreurGenerique}</span>
+      </p>
+
       <fieldset class="bloc">
         <legend class="bloc__titre">{r.jourLabel}</legend>
 
@@ -344,6 +357,33 @@ const dateCourte = (d: Date) => `${quantieme(d)} ${moisCourt.format(d)}`;
     font-size: var(--t-kicker);
     color: var(--encre-3);
   }
+
+  /* --- Le message de refus ------------------------------------------- */
+  .alerte {
+    display: none;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+    padding: 0.9rem 1.1rem;
+    background: var(--braise-pale);
+    border-left: 3px solid var(--braise);
+    border-radius: 0 var(--rayon) var(--rayon) 0;
+    font-size: var(--t-petit);
+    line-height: 1.6;
+  }
+
+  /* « :target » suffit : le navigateur l'applique sans une ligne de script. */
+  .alerte:target {
+    display: grid;
+  }
+
+  .alerte__titre {
+    color: var(--braise);
+  }
+
+  .alerte__texte {
+    color: var(--encre-2);
+    overflow-wrap: anywhere;
+  }
 </style>
 
 <script>
@@ -428,5 +468,27 @@ const dateCourte = (d: Date) => `${quantieme(d)} ${moisCourt.format(d)}`;
       /* On rouvre sur le premier jour qui offre encore un créneau. */
       for (const d of journees()) d.open = d === premierLibre;
     })();
+  }
+</script>
+
+<script is:inline>
+  /**
+   * LA RAISON EXACTE DU REFUS.
+   *
+   * Le texte générique est déjà à l'écran — « :target » s'en charge. Ce script
+   * ne fait que le préciser, et ouvrir le message même si l'ancre a été
+   * perdue en route. Il déplace aussi le focus dessus : un lecteur d'écran
+   * doit entendre le refus, pas le découvrir en tabulant.
+   */
+  {
+    const dit = new URLSearchParams(location.search).get('erreur');
+    const boite = document.getElementById('erreur');
+    if (dit && boite) {
+      const texte = boite.querySelector('[data-erreur]');
+      if (texte) texte.textContent = dit;
+      boite.style.display = 'grid';
+      boite.focus({ preventScroll: true });
+      boite.scrollIntoView({ block: 'center', behavior: 'instant' });
+    }
   }
 </script>

@@ -474,7 +474,10 @@
     "navMenu": "Menu du site",
     "navPied": "Plan du site",
     "$repères": "DEUX REPÈRES DE NAVIGATION NE PARTAGENT JAMAIS UN NOM : « landmark-unique » le relève, et deux listes homonymes se confondent à l'oreille d'un lecteur d'écran. La barre d'ordinateur, le panneau de téléphone et le pied de page en portent donc trois différents.",
-    "piedContact": "Contact"
+    "piedContact": "Contact",
+    "$erreur": "LE MESSAGE DE REFUS DOIT ARRIVER JUSQU'AU VISITEUR. La fonction le renvoie dans l'adresse ; la page le montrait nulle part, et l'on revenait au formulaire sans savoir pourquoi. Le texte générique s'affiche SANS script, par « :target » sur l'ancre #erreur ; le script le remplace ensuite par la raison exacte quand elle est là.",
+    "erreurGenerique": "Un renseignement demande à être complété. Reprenez le formulaire ci-dessous.",
+    "erreurTitre": "Votre demande est restée ici"
   },
   "egaree": {
     "$": "La page servie quand l'adresse demandée mène ailleurs.",

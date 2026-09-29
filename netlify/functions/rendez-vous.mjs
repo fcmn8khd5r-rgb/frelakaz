@@ -93,7 +93,7 @@ const reussir = (corps, veutPage, requete) =>
 const rater = (message, veutPage, requete, motif) =>
   veutPage
     ? Response.redirect(
-        new URL(`/rendez-vous/?erreur=${encodeURIComponent(message)}`, requete.url),
+        new URL(`/rendez-vous/?erreur=${encodeURIComponent(message)}#erreur`, requete.url),
         303,
       )
     : Response.json(motif ? { message, motif } : { message }, { status: motif === 'pris' || motif === 'date-passee' ? 409 : 400 });

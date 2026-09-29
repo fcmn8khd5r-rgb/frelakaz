@@ -138,7 +138,7 @@ const reussir = (corps, veutPage, requete) =>
 
 const rater = (message, veutPage, requete) =>
   veutPage
-    ? Response.redirect(new URL(`/devis/?erreur=${encodeURIComponent(message)}`, requete.url), 303)
+    ? Response.redirect(new URL(`/devis/?erreur=${encodeURIComponent(message)}#erreur`, requete.url), 303)
     : Response.json({ message }, { status: 400 });
 
 export const config = { path: '/api/devis' };
