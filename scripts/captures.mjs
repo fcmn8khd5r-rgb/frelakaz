@@ -6,7 +6,7 @@
 import { chromium } from 'playwright';
 import { mkdir } from 'node:fs/promises';
 
-const BASE = process.env.BASE || 'http://127.0.0.1:4477';
+const BASE = process.env.BASE || 'http://127.0.0.1:4488';
 const SORTIE = process.argv[2];
 await mkdir(SORTIE, { recursive: true });
 

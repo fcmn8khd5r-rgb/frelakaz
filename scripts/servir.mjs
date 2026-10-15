@@ -8,7 +8,7 @@ import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 
 const RACINE = path.resolve(import.meta.dirname, '../dist');
-/* Un port À LUI. Balaou sert sur 4455, Woulé sur 4477 : deux sites sur le même
+/* Un port À LUI. Balaou sert sur 4466, Woulé sur 4477 : deux sites sur le même
    port, et l'on mesure l'un en croyant mesurer l'autre — c'est arrivé. */
 const PORT = Number(process.env.PORT || 4488);
 const TYPES = {
